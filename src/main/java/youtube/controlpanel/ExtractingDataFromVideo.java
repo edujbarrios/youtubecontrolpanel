@@ -12,7 +12,7 @@ import com.google.api.services.youtube.model.VideoListResponse;
 public class ExtractingDataFromVideo {
 
     /** Your YouTube Data API Key */
-    private static final String API_KEY = "YOUR_API_KEY";
+    private static final String API_KEY = "AIzaSyCCtrW5wx9A7tXo5_s68BkNpE7vv96qGpM";
 
     /**
      * Main method. Makes a call to the YouTube Data API and prints details of a specific video.
