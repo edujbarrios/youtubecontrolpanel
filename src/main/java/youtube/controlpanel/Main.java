@@ -1,6 +1,6 @@
 package youtube.controlpanel;
 
-import com.google.api.services.youtube.model.SearchResult;
+import com.google.api.services.youtube.model.Video;
 import youtube.controlpanel.model.ChannelData;
 
 import java.util.List;
@@ -8,12 +8,13 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         ChannelData channelData = new ChannelData();
-        List<SearchResult> searchResults = channelData.getVideos();
+        List<Video> videoResults = channelData.getVideos();
 
-        for (SearchResult searchResult : searchResults) {
-            System.out.println("Video Title: " + searchResult.getSnippet().getTitle());
-            System.out.println("Video ID: " + searchResult.getId());
-            System.out.println("---------");
+        for (Video video : videoResults) {
+            System.out.println("Video Title: " + video.getSnippet().getTitle());
+            System.out.println("Video ID: " + video.getId());
+            System.out.println("Video Likes: " + video.getStatistics().getLikeCount());
+            System.out.println("------");
         }
     }
 }
