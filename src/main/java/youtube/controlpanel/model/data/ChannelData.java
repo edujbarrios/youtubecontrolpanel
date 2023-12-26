@@ -1,7 +1,6 @@
 package youtube.controlpanel.model.data;
 
-import com.google.api.services.youtube.model.Video;
-import youtube.controlpanel.model.strategies.DataRetrievalStrategy;
+import youtube.controlpanel.model.strategies.*;
 
 import java.util.List;
 
@@ -14,20 +13,18 @@ public class ChannelData {
 
     /**
      * Constructor for ChannelData.
-     *
-     * @param strategy The data retrieval strategy to be used for fetching YouTube channel data.
      */
-    public ChannelData(DataRetrievalStrategy strategy) {
-        this.strategy = strategy;
+    public ChannelData() {
+        this.strategy = new ChannelDataRetrievalStrategy();
     }
 
     /**
-     * Retrieves a list of videos from a specified YouTube channel URL.
+     * Retrieves a list of URL videos from a specified YouTube channel URL.
      *
      * @param channelUrl The URL of the YouTube channel from which to retrieve videos.
-     * @return A list of Video objects, each representing a video in the channel.
+     * @return A list of URLs, each identifying a video in the channel.
      */
-    public List<Video> RetrieveData(String channelUrl) {
-        return (List<Video>) strategy.retrieveData(channelUrl);
+    public List<String> retrieveData(String channelUrl) {
+        return (List<String>) strategy.retrieveData(channelUrl);
     }
 }

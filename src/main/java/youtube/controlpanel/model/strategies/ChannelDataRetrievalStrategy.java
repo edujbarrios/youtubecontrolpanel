@@ -19,14 +19,14 @@ public class ChannelDataRetrievalStrategy implements DataRetrievalStrategy {
     private static final String API_KEY = "AIzaSyCCtrW5wx9A7tXo5_s68BkNpE7vv96qGpM";
 
     /**
-     * Retrieves a list of videos from a given YouTube channel URL.
+     * Retrieves a list of URL videos from a given YouTube channel URL.
      *
      * @param channelUrl The URL of the YouTube channel from which to retrieve videos.
-     * @return A list of Video objects representing the videos from the specified channel.
+     * @return A list of URLs, each identifying a video in the channel.
      */
     @Override
-    public List<Video> retrieveData(String channelUrl) {
-        List<Video> videoList = new ArrayList<>();
+    public List<String> retrieveData(String channelUrl) {
+        List<String> videoList = new ArrayList<>();
         try {
             String channelID = LinkParser.extractChannelIdFromUrl(channelUrl);
             if (channelID == null) {
@@ -40,20 +40,13 @@ public class ChannelDataRetrievalStrategy implements DataRetrievalStrategy {
                     .list("id")
                     .setChannelId(channelID)
                     .setType("video")
-                    .setMaxResults((long) 10)
+                    .setMaxResults((long) 5)
                     .setKey(API_KEY)
                     .execute();
 
             for (SearchResult searchResult : searchListResponse.getItems()) {
-                String videoID = searchResult.getId().getVideoId();
-
-                VideoListResponse videoListResponse = youtubeService.videos()
-                        .list("snippet,statistics")
-                        .setId(videoID)
-                        .setKey(API_KEY)
-                        .execute();
-
-                videoList.add(videoListResponse.getItems().get(0));
+                String videoURL = "https://www.youtube.com/watch?v=" + searchResult.getId().getVideoId();
+                videoList.add(videoURL);
             }
         } catch (Exception e) {
             e.printStackTrace();

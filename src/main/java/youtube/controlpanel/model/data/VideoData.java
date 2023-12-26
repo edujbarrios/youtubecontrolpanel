@@ -1,7 +1,7 @@
 package youtube.controlpanel.model.data;
 
 import com.google.api.services.youtube.model.Video;
-import youtube.controlpanel.model.strategies.DataRetrievalStrategy;
+import youtube.controlpanel.model.strategies.*;
 
 /**
  * VideoData class serves as a context in the Strategy pattern.
@@ -12,11 +12,9 @@ public class VideoData {
 
     /**
      * Constructs a VideoData object with a specified data retrieval strategy.
-     *
-     * @param strategy The data retrieval strategy to be used for fetching YouTube video data.
      */
-    public VideoData(DataRetrievalStrategy strategy) {
-        this.strategy = strategy;
+    public VideoData() {
+        this.strategy = new VideoDataRetrievalStrategy();
     }
 
     /**
@@ -25,7 +23,7 @@ public class VideoData {
      * @param videoUrl The URL of the YouTube video.
      * @return A Video object containing details of the requested video, or null if not found.
      */
-    public Video retrieveVideoDetails(String videoUrl) {
+    public Video retrieveData(String videoUrl) {
         return (Video) strategy.retrieveData(videoUrl);
     }
 }
