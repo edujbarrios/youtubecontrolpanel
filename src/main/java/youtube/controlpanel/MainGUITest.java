@@ -64,6 +64,7 @@ public class MainGUITest extends JFrame {
      */
     private void prepareControlPanel() {
         controlPanelFrame = new JFrame("Video Control Panel");
+        // We should change this Layout config if we want more windows to the panel
         controlPanelFrame.setLayout(new GridLayout(3, 1, 10, 10)); // Adjusted for 3 rows to include the channel name
         controlPanelFrame.setSize(600, 400);
         controlPanelFrame.setLocationRelativeTo(null);
