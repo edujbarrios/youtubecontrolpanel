@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 import com.google.api.services.youtube.model.Video;
 import youtube.controlpanel.model.data.ChannelData;
@@ -13,26 +13,26 @@ import youtube.controlpanel.model.resources.LinkParser;
 
 /**
  * Main application class for processing YouTube URLs with extended video information using a GUI.
- * This class provides a graphical user interface to fetch and display details of YouTube videos and channels.
  */
 public class MainGUITest extends JFrame {
 
     private JTextField urlTextField;
     private ChannelData channelData;
     private VideoData videoData;
+    private JFrame controlPanelFrame; // Frame for the control panel
 
     /**
-     * Constructor to set up the GUI components.
+     * Constructor to set up the GUI components and the control panel.
      */
     public MainGUITest() {
         channelData = new ChannelData();
         videoData = new VideoData();
         createUI();
+        prepareControlPanel();
     }
 
     /**
-     * Method to create the user interface.
-     * This method sets up the layout, text field, and button for the main application window.
+     * Method to create the user interface of the main window.
      */
     private void createUI() {
         setTitle("YouTube Video Information Viewer");
@@ -58,8 +58,17 @@ public class MainGUITest extends JFrame {
     }
 
     /**
-     * Method to fetch videos from a YouTube channel URL.
-     * It validates the URL and retrieves video data for display.
+     * Prepares the control panel window with a grid layout.
+     */
+    private void prepareControlPanel() {
+        controlPanelFrame = new JFrame("Video Control Panel");
+        controlPanelFrame.setLayout(new GridLayout(2, 2, 10, 10)); // Grid layout for 2x2 matrix
+        controlPanelFrame.setSize(600, 400);
+        controlPanelFrame.setLocationRelativeTo(null);
+    }
+
+    /**
+     * Fetches videos from a given YouTube channel URL and displays recent videos.
      */
     private void fetchChannelVideos() {
         String url = urlTextField.getText();
@@ -78,10 +87,9 @@ public class MainGUITest extends JFrame {
     }
 
     /**
-     * Displays a list of the most recent videos in a new window.
-     * Each video is represented as a button that, when clicked, displays detailed video information.
-     * 
-     * @param videosList A list of Video objects to display.
+     * Displays a window with a list of recent videos as buttons.
+     *
+     * @param videosList List of recent Video objects.
      */
     private void displayRecentVideos(List<Video> videosList) {
         JFrame recentVideosFrame = new JFrame("Recent Videos");
@@ -97,7 +105,7 @@ public class MainGUITest extends JFrame {
             videoButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    displayVideoDetailsInSeparateWindows(video);
+                    displayVideoDetailsInControlPanel(video);
                 }
             });
 
@@ -109,39 +117,43 @@ public class MainGUITest extends JFrame {
     }
 
     /**
-     * Displays video details in separate windows.
-     * Each detail such as title, likes, views, and comments is shown in its own window.
-     * 
+     * Displays video details in the control panel window.
+     *
      * @param video The Video object whose details are to be displayed.
      */
-    private void displayVideoDetailsInSeparateWindows(Video video) {
-        showDetailWindow("Title: " + video.getSnippet().getTitle(), 0, 0);
-        showDetailWindow("Likes: " + video.getStatistics().getLikeCount(), 0, 100);
-        showDetailWindow("Views: " + video.getStatistics().getViewCount(), 300, 0);
-        showDetailWindow("Comments: " + video.getStatistics().getCommentCount(), 300, 100);
+    private void displayVideoDetailsInControlPanel(Video video) {
+        controlPanelFrame.getContentPane().removeAll();
+
+        controlPanelFrame.add(createDetailPanel("Title: " + video.getSnippet().getTitle()));
+        controlPanelFrame.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
+        controlPanelFrame.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
+        controlPanelFrame.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
+
+        controlPanelFrame.revalidate();
+        controlPanelFrame.repaint();
+        controlPanelFrame.setVisible(true);
     }
 
     /**
-     * Shows a detail of a video in a separate window.
-     * 
-     * @param detail The detail to be displayed in the window.
-     * @param x The x-coordinate for the window's position.
-     * @param y The y-coordinate for the window's position.
+     * Creates a panel for a single video detail.
+     *
+     * @param detail The video detail to be displayed.
+     * @return JPanel containing the detail.
      */
-    private void showDetailWindow(String detail, int x, int y) {
-        JFrame detailFrame = new JFrame();
-        detailFrame.setSize(300, 100);
-        detailFrame.add(new JLabel(detail, SwingConstants.CENTER));
-        detailFrame.setLocation(x, y);
-        detailFrame.setVisible(true);
+    private JPanel createDetailPanel(String detail) {
+        JPanel detailPanel = new JPanel(new BorderLayout());
+        detailPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        detailPanel.add(new JLabel(detail), BorderLayout.CENTER);
+        return detailPanel;
     }
 
     /**
      * The main method to launch the application.
-     * 
+     *
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MainGUITest().setVisible(true));
     }
 }
+
