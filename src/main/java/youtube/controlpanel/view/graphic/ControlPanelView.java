@@ -5,6 +5,8 @@ import youtube.controlpanel.view.observer.YouTubeDataObserver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ControlPanelView extends JFrame implements YouTubeDataObserver {
@@ -38,6 +40,28 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
     @Override
     public void update(List<Video> videos) {
+        JFrame recentVideosFrame = new JFrame("Recent Videos");
+        recentVideosFrame.setLayout(new GridLayout(0, 1));
+        recentVideosFrame.setSize(400, 300);
+        recentVideosFrame.setLocationRelativeTo(this);
+
+        int count = 0;
+        for (Video video : videos) {
+            if (count >= 5) break;
+            String videoTitle = video.getSnippet().getTitle();
+            JButton videoButton = new JButton(videoTitle);
+            videoButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    displayVideoDetails(video, video.getSnippet().getChannelTitle());
+                }
+            });
+
+            recentVideosFrame.add(videoButton);
+            count++;
+        }
+
+        recentVideosFrame.setVisible(true);
     }
 
     private JPanel createDetailPanel(String detail) {

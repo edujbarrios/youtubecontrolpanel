@@ -18,7 +18,7 @@ public class MainView extends JFrame {
     private JButton fetchButton;
     private ChannelData channelData;
     private VideoData videoData;
-    private ControlPanelView controlPanelView;
+    private YouTubeDataObserver controlPanelView;
     private String channelName;
     private List<YouTubeDataObserver> observers;
 
@@ -27,7 +27,7 @@ public class MainView extends JFrame {
         videoData = new VideoData();
         controlPanelView = new ControlPanelView();
         observers = new ArrayList<>();
-        addObserver((YouTubeDataObserver) controlPanelView);
+        addObserver(controlPanelView);
         createUI();
     }
 
