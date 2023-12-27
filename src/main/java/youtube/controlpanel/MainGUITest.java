@@ -1,3 +1,4 @@
+
 package youtube.controlpanel;
 
 import javax.swing.*;
@@ -20,6 +21,7 @@ public class MainGUITest extends JFrame {
     private ChannelData channelData;
     private VideoData videoData;
     private JFrame controlPanelFrame; // Frame for the control panel
+    private String channelName; // Name of the channel
 
     /**
      * Constructor to set up the GUI components and the control panel.
@@ -62,13 +64,14 @@ public class MainGUITest extends JFrame {
      */
     private void prepareControlPanel() {
         controlPanelFrame = new JFrame("Video Control Panel");
-        controlPanelFrame.setLayout(new GridLayout(2, 2, 10, 10)); // Grid layout for 2x2 matrix
+        controlPanelFrame.setLayout(new GridLayout(3, 1, 10, 10)); // Adjusted for 3 rows to include the channel name
         controlPanelFrame.setSize(600, 400);
         controlPanelFrame.setLocationRelativeTo(null);
     }
 
     /**
      * Fetches videos from a given YouTube channel URL and displays recent videos.
+     * Also retrieves and sets the channel's name.
      */
     private void fetchChannelVideos() {
         String url = urlTextField.getText();
@@ -80,7 +83,12 @@ public class MainGUITest extends JFrame {
         List<String> videosURLList = channelData.retrieveData(url);
         List<Video> videosList = new ArrayList<>();
         for (String videoURL : videosURLList) {
-            videosList.add(videoData.retrieveData(videoURL));
+            Video video = videoData.retrieveData(videoURL);
+            videosList.add(video);
+            // Assuming the channel name is the same for all videos in the list
+            if (channelName == null || channelName.isEmpty()) {
+                channelName = video.getSnippet().getChannelTitle();
+            }
         }
 
         displayRecentVideos(videosList);
@@ -117,14 +125,17 @@ public class MainGUITest extends JFrame {
     }
 
     /**
-     * Displays video details in the control panel window.
+     * Displays video details in the control panel window including the channel name.
      *
      * @param video The Video object whose details are to be displayed.
      */
     private void displayVideoDetailsInControlPanel(Video video) {
         controlPanelFrame.getContentPane().removeAll();
 
-        controlPanelFrame.add(createDetailPanel("Title: " + video.getSnippet().getTitle()));
+        // Display the channel name at the top
+        controlPanelFrame.add(createDetailPanel("Channel Name: " + channelName));
+        //This is the way to add more windows to the panel, we should do p.e VideoLikesChart.getInfo() or something like this
+        controlPanelFrame.add(createDetailPanel("Video title: " + video.getSnippet().getTitle()));
         controlPanelFrame.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
         controlPanelFrame.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
         controlPanelFrame.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
