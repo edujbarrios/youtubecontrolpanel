@@ -78,4 +78,4 @@ public class MainView extends JFrame {
             observer.update(videos);
         }
     }
-
+}
