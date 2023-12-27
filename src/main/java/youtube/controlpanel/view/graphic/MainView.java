@@ -79,7 +79,3 @@ public class MainView extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MainView().setVisible(true));
-    }
-}
