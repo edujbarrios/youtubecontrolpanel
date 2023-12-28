@@ -1,12 +1,12 @@
 package youtube.controlpanel.view.graphic;
 
 import com.google.api.services.youtube.model.Video;
+import youtube.controlpanel.model.resources.YouTubeEarningsCalculator;
 import youtube.controlpanel.view.observer.YouTubeDataObserver;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ControlPanelView extends JFrame implements YouTubeDataObserver {
@@ -32,6 +32,10 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         controlPanelFrame.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
         controlPanelFrame.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
         controlPanelFrame.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
+        // Get and display the estimated earnings
+        controlPanelFrame.add(createDetailPanel("Estimated Earnings of the video: $" +
+                String.format("%.2f", YouTubeEarningsCalculator.calculateAdjustedEarnings(video))));
+
 
         controlPanelFrame.revalidate();
         controlPanelFrame.repaint();
@@ -45,20 +49,12 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         recentVideosFrame.setSize(400, 300);
         recentVideosFrame.setLocationRelativeTo(this);
 
-        int count = 0;
-        for (Video video : videos) {
-            if (count >= 5) break;
+        for (int count = 0; count < Math.min(videos.size(), 5); count++) {
+            Video video = videos.get(count);
             String videoTitle = video.getSnippet().getTitle();
             JButton videoButton = new JButton(videoTitle);
-            videoButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    displayVideoDetails(video, video.getSnippet().getChannelTitle());
-                }
-            });
-
+            videoButton.addActionListener(e -> displayVideoDetails(video, video.getSnippet().getChannelTitle()));
             recentVideosFrame.add(videoButton);
-            count++;
         }
 
         recentVideosFrame.setVisible(true);
@@ -71,3 +67,4 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         return detailPanel;
     }
 }
+
