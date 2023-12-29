@@ -25,7 +25,7 @@ public class MainView extends JFrame {
     public MainView() {
         channelData = new ChannelData();
         videoData = new VideoData();
-        controlPanelView = new ControlPanelView();
+        controlPanelView = new ControlPanelView(this);
         observers = new ArrayList<>();
         addObserver(controlPanelView);
         createUI();
