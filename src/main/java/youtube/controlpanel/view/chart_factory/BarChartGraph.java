@@ -5,7 +5,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class BarChartGraph implements Graph {
+public class BarChartGraph extends Graph {
     private final DefaultCategoryDataset dataset;
     private final String title;
     public BarChartGraph(DefaultCategoryDataset dataset, String title) {

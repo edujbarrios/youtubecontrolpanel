@@ -6,7 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class LineChartGraph implements Graph {
+public class LineChartGraph extends Graph {
     private final DefaultCategoryDataset dataset;
     private final String title;
     public LineChartGraph(DefaultCategoryDataset dataset, String title) {

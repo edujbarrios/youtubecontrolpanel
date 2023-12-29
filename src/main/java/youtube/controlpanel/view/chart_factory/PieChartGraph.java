@@ -5,7 +5,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
-public class PieChartGraph implements Graph {
+public class PieChartGraph extends Graph {
     private final DefaultCategoryDataset categoryDataset;
     private final String title;
     public PieChartGraph(DefaultCategoryDataset dataset, String title) {

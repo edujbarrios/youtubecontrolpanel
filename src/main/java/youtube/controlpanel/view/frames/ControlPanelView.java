@@ -1,10 +1,10 @@
 package youtube.controlpanel.view.frames;
 
 import com.google.api.services.youtube.model.Video;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import youtube.controlpanel.model.resources.YouTubeEarningsCalculator;
+import youtube.controlpanel.view.chart_dataset.Dataset;
+import youtube.controlpanel.view.chart_dataset.ViewsDataset;
 import youtube.controlpanel.view.chart_factory.Graph;
 import youtube.controlpanel.view.chart_factory.GraphFactory;
 import youtube.controlpanel.view.observer.YouTubeDataObserver;
@@ -78,29 +78,14 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
     // Adds a chart to the specified panel based on the chart type
     private void addChart(JPanel panel, String chartType, Video video, String title) {
-        DefaultCategoryDataset dataset = createDataset(video);
+        Dataset viewsDataset= new ViewsDataset();
+        DefaultCategoryDataset dataset = viewsDataset.createDataset(video);
         GraphFactory graphFactory = new GraphFactory();
         Graph chartGraph = graphFactory.createGraph(chartType, dataset, title);
-        JFreeChart chart = chartGraph.createChart();
-
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(400, 300));
-        panel.add(chartPanel);
+        panel.add(chartGraph.getChartPanel());
     }
 
-    // Creates a dataset for the charts based on video statistics
-    private DefaultCategoryDataset createDataset(Video video) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        String series = "Video Details";
-
-        dataset.addValue(video.getStatistics().getLikeCount(), series, "Likes");
-        dataset.addValue(video.getStatistics().getViewCount(), series, "Views");
-        dataset.addValue(video.getStatistics().getCommentCount(), series, "Comments");
-        dataset.addValue(YouTubeEarningsCalculator.calculateAdjustedEarnings(video), series, "Estimated Earnings");
-
-        return dataset;
-    }
 
     // Updates the view with the latest list of videos
     @Override
