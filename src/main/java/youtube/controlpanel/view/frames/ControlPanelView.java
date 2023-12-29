@@ -7,57 +7,56 @@ import youtube.controlpanel.view.observer.YouTubeDataObserver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.chrono.JapaneseChronology;
 import java.util.List;
 
 public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
-    private JFrame controlPanelFrame;
+    private JFrame mainFrame;
+    private JPanel detailsPanel, videosPanel;
 
-    public ControlPanelView() {
+    public ControlPanelView(JFrame frame) {
+        mainFrame = frame;
         prepareControlPanel();
     }
 
     private void prepareControlPanel() {
-        controlPanelFrame = new JFrame("Video Control Panel");
-        controlPanelFrame.setLayout(new GridLayout(3, 1, 10, 10));
-        controlPanelFrame.setSize(600, 400);
-        controlPanelFrame.setLocationRelativeTo(null);
+        detailsPanel = new JPanel();
+        videosPanel = new JPanel();
     }
 
     public void displayVideoDetails(Video video, String channelName) {
-        controlPanelFrame.getContentPane().removeAll();
+        detailsPanel.removeAll();
+        detailsPanel.setLayout(new GridLayout(6, 1));
 
-        controlPanelFrame.add(createDetailPanel("Channel Name: " + channelName));
-        controlPanelFrame.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
-        controlPanelFrame.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
-        controlPanelFrame.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
-        controlPanelFrame.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
+        detailsPanel.add(createDetailPanel("Channel Name: " + channelName));
+        detailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
+        detailsPanel.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
+        detailsPanel.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
+        detailsPanel.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
         // Get and display the estimated earnings
-        controlPanelFrame.add(createDetailPanel("Estimated Earnings of the video: $" +
+        detailsPanel.add(createDetailPanel("Estimated Earnings of the video: $" +
                 String.format("%.2f", YouTubeEarningsCalculator.calculateAdjustedEarnings(video))));
 
-
-        controlPanelFrame.revalidate();
-        controlPanelFrame.repaint();
-        controlPanelFrame.setVisible(true);
+        mainFrame.add(detailsPanel, BorderLayout.EAST);
+        mainFrame.pack();
     }
 
     @Override
     public void update(List<Video> videos) {
-        JFrame recentVideosFrame = new JFrame("Recent Videos");
-        recentVideosFrame.setLayout(new GridLayout(0, 1));
-        recentVideosFrame.setSize(400, 300);
-        recentVideosFrame.setLocationRelativeTo(this);
+        videosPanel.removeAll();
+        videosPanel.setLayout(new GridLayout(5, 1));
 
         for (int count = 0; count < Math.min(videos.size(), 5); count++) {
             Video video = videos.get(count);
             String videoTitle = video.getSnippet().getTitle();
             JButton videoButton = new JButton(videoTitle);
             videoButton.addActionListener(e -> displayVideoDetails(video, video.getSnippet().getChannelTitle()));
-            recentVideosFrame.add(videoButton);
+            videosPanel.add(videoButton);
         }
 
-        recentVideosFrame.setVisible(true);
+        mainFrame.add(videosPanel, BorderLayout.SOUTH);
+        mainFrame.pack();
     }
 
     private JPanel createDetailPanel(String detail) {
