@@ -43,7 +43,8 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         createVideoDetailsPanel(video, channelName);
 
         // Create and display charts panel
-        createChartsPanel(video);
+
+        detailsPanel.add(createChartsPanel(video), BorderLayout.CENTER);
 
         mainFrame.add(detailsPanel, BorderLayout.CENTER);
         mainFrame.pack();
@@ -65,24 +66,27 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     }
 
     // Creates the panel displaying charts
-    private void createChartsPanel(Video video) {
+    private JPanel createChartsPanel(Video video) {
         JPanel chartsPanel = new JPanel(new GridLayout(1, 3));
 
         // Adding line chart, bar chart, and pie chart to the panel
-        addChart(chartsPanel, "line", video, "Views by time ");
-        addChart(chartsPanel, "bar", video, "Views by time ");
-        addChart(chartsPanel, "pie", video, "Views by time ");
+        Graph videoViews = createGraph("line", video, "Views by time ");
+        Graph DifferentVideoViews = createGraph( "bar", video, "Views by time ");
+        Graph viewsMoneyLikes = createGraph( "pie", video, "Views by time ");
 
-        detailsPanel.add(chartsPanel, BorderLayout.CENTER);
+        chartsPanel.add(videoViews.getChartPanel());
+        chartsPanel.add(DifferentVideoViews.getChartPanel());
+        chartsPanel.add(viewsMoneyLikes.getChartPanel());
+
+        return chartsPanel;
     }
 
     // Adds a chart to the specified panel based on the chart type
-    private void addChart(JPanel panel, String chartType, Video video, String title) {
+    private Graph createGraph( String chartType, Video video, String title) {
         Dataset viewsDataset= new ViewsDataset();
         DefaultCategoryDataset dataset = viewsDataset.createDataset(video);
         GraphFactory graphFactory = new GraphFactory();
-        Graph chartGraph = graphFactory.createGraph(chartType, dataset, title);
-        panel.add(chartGraph.getChartPanel());
+        return graphFactory.createGraph(chartType, dataset, title);
     }
 
 
