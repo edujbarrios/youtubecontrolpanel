@@ -6,19 +6,19 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class BarChartGraph implements Graph {
-    private DefaultCategoryDataset dataset;
-
-    public BarChartGraph(DefaultCategoryDataset dataset) {
+    private final DefaultCategoryDataset dataset;
+    private final String title;
+    public BarChartGraph(DefaultCategoryDataset dataset, String title) {
         this.dataset = dataset;
+        this.title = title;
     }
-
     @Override
     public JFreeChart createChart() {
         // Use the correct method createBarChart for creating a bar chart
         return ChartFactory.createBarChart(
-                "Total Subscribers", // chart title
+                title, // chart title
                 "Time",              // domain axis label
-                "Subscribers",       // range axis label
+                "Value",       // range axis label
                 dataset,             // data
                 PlotOrientation.VERTICAL, // orientation
                 true,                // include legend

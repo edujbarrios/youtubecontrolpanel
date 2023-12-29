@@ -48,9 +48,9 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         // Charts Panel
         JPanel chartsPanel = new JPanel(new GridLayout(1, 3));
 
-        addChart(chartsPanel, "line", video);
-        addChart(chartsPanel, "bar", video);
-        addChart(chartsPanel, "pie", video);
+        addChart(chartsPanel, "line", video, "Views by time ");
+        addChart(chartsPanel, "bar", video, "Views by time ");
+        addChart(chartsPanel, "pie", video, "Views by time ");
 
         detailsPanel.add(chartsPanel, BorderLayout.CENTER);
 
@@ -58,10 +58,10 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         mainFrame.pack();
     }
 
-    private void addChart(JPanel panel, String chartType,Video video) {
+    private void addChart(JPanel panel, String chartType,Video video, String title) {
         DefaultCategoryDataset dataset = createDataset(video);
         GraphFactory graphFactory = new GraphFactory();
-        Graph chartGraph = graphFactory.createGraph(chartType, dataset);
+        Graph chartGraph = graphFactory.createGraph(chartType, dataset, title);
         JFreeChart chart = chartGraph.createChart();
 
         // Adjust the size of the ChartPanel

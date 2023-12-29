@@ -6,10 +6,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 public class PieChartGraph implements Graph {
-    private DefaultCategoryDataset categoryDataset;
-
-    public PieChartGraph(DefaultCategoryDataset categoryDataset) {
-        this.categoryDataset = categoryDataset;
+    private final DefaultCategoryDataset categoryDataset;
+    private final String title;
+    public PieChartGraph(DefaultCategoryDataset dataset, String title) {
+        this.categoryDataset = dataset;
+        this.title = title;
     }
 
     @Override
@@ -19,7 +20,7 @@ public class PieChartGraph implements Graph {
 
         // Use the correct method createPieChart for creating a pie chart
         return ChartFactory.createPieChart(
-                "Total Subscribers", // chart title
+                title, // chart title
                 pieDataset,          // data
                 true,                // include legend
                 true,                // tooltips
