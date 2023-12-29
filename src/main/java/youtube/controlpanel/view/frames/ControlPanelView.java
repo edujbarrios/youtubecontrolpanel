@@ -35,20 +35,22 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         detailsPanel.setLayout(new BorderLayout());
 
         // Video Details Panel
-        JPanel videoDetailsPanel = new JPanel(new GridLayout(5, 2));
+        JPanel videoDetailsPanel = new JPanel(new GridLayout(6, 2));
         videoDetailsPanel.add(createDetailPanel("Channel Name: " + channelName));
         videoDetailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
         videoDetailsPanel.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
         videoDetailsPanel.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
         videoDetailsPanel.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
+        videoDetailsPanel.add(createDetailPanel("Estimated Earnings of the video: $" +
+                String.format("%.2f", YouTubeEarningsCalculator.calculateAdjustedEarnings(video))));
         detailsPanel.add(videoDetailsPanel, BorderLayout.NORTH);
 
         // Charts Panel
         JPanel chartsPanel = new JPanel(new GridLayout(1, 3));
 
-        addChart(chartsPanel, "line");
-        addChart(chartsPanel, "bar");
-        addChart(chartsPanel, "pie");
+        addChart(chartsPanel, "line", video);
+        addChart(chartsPanel, "bar", video);
+        addChart(chartsPanel, "pie", video);
 
         detailsPanel.add(chartsPanel, BorderLayout.CENTER);
 
@@ -56,8 +58,8 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         mainFrame.pack();
     }
 
-    private void addChart(JPanel panel, String chartType) {
-        DefaultCategoryDataset dataset = createSampleDataset();
+    private void addChart(JPanel panel, String chartType,Video video) {
+        DefaultCategoryDataset dataset = createDataset(video);
         GraphFactory graphFactory = new GraphFactory();
         Graph chartGraph = graphFactory.createGraph(chartType, dataset);
         JFreeChart chart = chartGraph.createChart();
@@ -67,17 +69,15 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         chartPanel.setPreferredSize(new Dimension(200, 150)); // Adjust dimensions as needed
         panel.add(chartPanel);
     }
-    // Example method to create a sample dataset
-    private static DefaultCategoryDataset createSampleDataset() {
+    private DefaultCategoryDataset createDataset(Video video) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        // Add sample data to the dataset
-        dataset.addValue(1.0, "Series1", "Category1");
-        dataset.addValue(4.0, "Series1", "Category2");
-        dataset.addValue(3.0, "Series1", "Category3");
-        dataset.addValue(5.0, "Series2", "Category1");
-        dataset.addValue(7.0, "Series2", "Category2");
-        dataset.addValue(8.0, "Series2", "Category3");
+        String series = "Video Details"; // Series name for the dataset
+
+        dataset.addValue(video.getStatistics().getLikeCount(), series, "Likes");
+        dataset.addValue(video.getStatistics().getViewCount(), series, "Views");
+        dataset.addValue(video.getStatistics().getCommentCount(), series, "Comments");
+        dataset.addValue(YouTubeEarningsCalculator.calculateAdjustedEarnings(video), series, "Estimated Earnings");
 
         return dataset;
     }
