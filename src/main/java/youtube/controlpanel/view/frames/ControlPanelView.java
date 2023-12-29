@@ -54,7 +54,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
         detailsPanel.add(chartsPanel, BorderLayout.CENTER);
 
-        mainFrame.add(detailsPanel, BorderLayout.EAST);
+        mainFrame.add(detailsPanel, BorderLayout.CENTER);
         mainFrame.pack();
     }
 
@@ -66,7 +66,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
         // Adjust the size of the ChartPanel
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(200, 150)); // Adjust dimensions as needed
+        chartPanel.setPreferredSize(new Dimension(400, 300)); // Adjust dimensions as needed
         panel.add(chartPanel);
     }
     private DefaultCategoryDataset createDataset(Video video) {
