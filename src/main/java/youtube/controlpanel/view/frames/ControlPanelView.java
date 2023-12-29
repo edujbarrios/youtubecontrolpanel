@@ -1,7 +1,12 @@
 package youtube.controlpanel.view.frames;
 
 import com.google.api.services.youtube.model.Video;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 import youtube.controlpanel.model.resources.YouTubeEarningsCalculator;
+import youtube.controlpanel.view.chart_factory.Graph;
+import youtube.controlpanel.view.chart_factory.GraphFactory;
 import youtube.controlpanel.view.observer.YouTubeDataObserver;
 
 
@@ -27,7 +32,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
     public void displayVideoDetails(Video video, String channelName) {
         detailsPanel.removeAll();
-        detailsPanel.setLayout(new GridLayout(6, 1));
+        detailsPanel.setLayout(new GridLayout(5, 2));
 
         detailsPanel.add(createDetailPanel("Channel Name: " + channelName));
         detailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
@@ -38,10 +43,42 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         detailsPanel.add(createDetailPanel("Estimated Earnings of the video: $" +
                 String.format("%.2f", YouTubeEarningsCalculator.calculateAdjustedEarnings(video))));
 
+
+        addCharts();
         mainFrame.add(detailsPanel, BorderLayout.EAST);
         mainFrame.pack();
     }
+    private void addCharts(){
+        DefaultCategoryDataset dataset = createSampleDataset();
+        // Use the factory to create a line chart graph
+        GraphFactory graphFactory = new GraphFactory();
+        Graph lineChart = graphFactory.createGraph("line", dataset);
+        JFreeChart chart = lineChart.createChart();
+        detailsPanel.add(new ChartPanel(chart));
 
+        Graph barChart = graphFactory.createGraph("bar", dataset);
+        chart = barChart.createChart();
+        detailsPanel.add(new ChartPanel(chart));
+
+
+        Graph pieChart = graphFactory.createGraph("pie", dataset);
+        chart = pieChart.createChart();
+        detailsPanel.add(new ChartPanel(chart));
+    }
+    // Example method to create a sample dataset
+    private static DefaultCategoryDataset createSampleDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        // Add sample data to the dataset
+        dataset.addValue(1.0, "Series1", "Category1");
+        dataset.addValue(4.0, "Series1", "Category2");
+        dataset.addValue(3.0, "Series1", "Category3");
+        dataset.addValue(5.0, "Series2", "Category1");
+        dataset.addValue(7.0, "Series2", "Category2");
+        dataset.addValue(8.0, "Series2", "Category3");
+
+        return dataset;
+    }
     @Override
     public void update(List<Video> videos) {
         videosPanel.removeAll();
