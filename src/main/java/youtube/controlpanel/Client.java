@@ -1,6 +1,6 @@
 package youtube.controlpanel;
 
-import youtube.controlpanel.view.graphic.MainView;
+import youtube.controlpanel.view.frames.MainView;
 
 import javax.swing.*;
 
