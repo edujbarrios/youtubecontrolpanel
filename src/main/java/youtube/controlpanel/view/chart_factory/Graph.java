@@ -5,4 +5,5 @@ import org.jfree.chart.JFreeChart;
 
 public interface Graph {
     JFreeChart createChart();
+
 }

@@ -1,4 +1,3 @@
-// LineChartGraph.java
 package youtube.controlpanel.view.chart_factory;
 
 import org.jfree.chart.ChartFactory;
@@ -15,8 +14,8 @@ public class BarChartGraph implements Graph {
 
     @Override
     public JFreeChart createChart() {
-        // Asegurándose de utilizar la sobrecarga correcta del método createLineChart
-        return ChartFactory.createLineChart(
+        // Use the correct method createBarChart for creating a bar chart
+        return ChartFactory.createBarChart(
                 "Total Subscribers", // chart title
                 "Time",              // domain axis label
                 "Subscribers",       // range axis label

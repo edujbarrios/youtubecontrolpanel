@@ -9,7 +9,6 @@ public class GraphFactory {
         return switch (type) {
             case "line" -> new LineChartGraph(dataset);
             case "bar" -> new BarChartGraph(dataset);
-            case "bubble" -> new BubbleChartGraph(dataset);
             case "pie" -> new PieChartGraph(dataset);
             default -> throw new IllegalArgumentException("Unknown graph type: " + type);
         };
