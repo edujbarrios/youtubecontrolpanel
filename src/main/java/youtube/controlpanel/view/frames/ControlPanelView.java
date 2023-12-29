@@ -32,38 +32,40 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
     public void displayVideoDetails(Video video, String channelName) {
         detailsPanel.removeAll();
-        detailsPanel.setLayout(new GridLayout(5, 2));
+        detailsPanel.setLayout(new BorderLayout());
 
-        detailsPanel.add(createDetailPanel("Channel Name: " + channelName));
-        detailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
-        detailsPanel.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
-        detailsPanel.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
-        detailsPanel.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
-        // Get and display the estimated earnings
-        detailsPanel.add(createDetailPanel("Estimated Earnings of the video: $" +
-                String.format("%.2f", YouTubeEarningsCalculator.calculateAdjustedEarnings(video))));
+        // Video Details Panel
+        JPanel videoDetailsPanel = new JPanel(new GridLayout(5, 2));
+        videoDetailsPanel.add(createDetailPanel("Channel Name: " + channelName));
+        videoDetailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
+        videoDetailsPanel.add(createDetailPanel("Likes: " + video.getStatistics().getLikeCount()));
+        videoDetailsPanel.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
+        videoDetailsPanel.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
+        detailsPanel.add(videoDetailsPanel, BorderLayout.NORTH);
 
+        // Charts Panel
+        JPanel chartsPanel = new JPanel(new GridLayout(1, 3));
 
-        addCharts();
+        addChart(chartsPanel, "line");
+        addChart(chartsPanel, "bar");
+        addChart(chartsPanel, "pie");
+
+        detailsPanel.add(chartsPanel, BorderLayout.CENTER);
+
         mainFrame.add(detailsPanel, BorderLayout.EAST);
         mainFrame.pack();
     }
-    private void addCharts(){
+
+    private void addChart(JPanel panel, String chartType) {
         DefaultCategoryDataset dataset = createSampleDataset();
-        // Use the factory to create a line chart graph
         GraphFactory graphFactory = new GraphFactory();
-        Graph lineChart = graphFactory.createGraph("line", dataset);
-        JFreeChart chart = lineChart.createChart();
-        detailsPanel.add(new ChartPanel(chart));
+        Graph chartGraph = graphFactory.createGraph(chartType, dataset);
+        JFreeChart chart = chartGraph.createChart();
 
-        Graph barChart = graphFactory.createGraph("bar", dataset);
-        chart = barChart.createChart();
-        detailsPanel.add(new ChartPanel(chart));
-
-
-        Graph pieChart = graphFactory.createGraph("pie", dataset);
-        chart = pieChart.createChart();
-        detailsPanel.add(new ChartPanel(chart));
+        // Adjust the size of the ChartPanel
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(200, 150)); // Adjust dimensions as needed
+        panel.add(chartPanel);
     }
     // Example method to create a sample dataset
     private static DefaultCategoryDataset createSampleDataset() {
