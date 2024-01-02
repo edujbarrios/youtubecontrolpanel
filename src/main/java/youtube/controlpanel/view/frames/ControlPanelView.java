@@ -48,6 +48,9 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
         mainFrame.add(detailsPanel, BorderLayout.CENTER);
         mainFrame.pack();
+
+        // Call to the function to display details in the terminal
+        TerminalDataDisplay.displayVideoDetails(video, channelName);
     }
 
     // Creates the panel displaying video details
