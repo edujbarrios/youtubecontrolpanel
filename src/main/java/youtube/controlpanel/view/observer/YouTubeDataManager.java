@@ -2,7 +2,6 @@ package youtube.controlpanel.view.observer;
 
 import com.google.api.services.youtube.model.Video;
 import youtube.controlpanel.model.strategies.DataRetrievalStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +13,6 @@ public class YouTubeDataManager {
         this.dataRetrievalStrategy = strategy;
     }
 
-    public YouTubeDataManager() {
-
-    }
-
     public void addObserver(YouTubeDataObserver observer) {
         observers.add(observer);
     }
@@ -27,12 +22,11 @@ public class YouTubeDataManager {
     }
 
     public void fetchData(String url) {
-        // Usar DataRetrievalStrategy para obtener los datos
         List<Video> videos = (List<Video>) dataRetrievalStrategy.retrieveData(url);
         notifyObservers(videos);
     }
 
-    private void notifyObservers(List<Video> videos) {
+    public void notifyObservers(List<Video> videos) {
         for (YouTubeDataObserver observer : observers) {
             observer.update(videos);
         }
