@@ -73,9 +73,9 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         JPanel chartsPanel = new JPanel(new GridLayout(1, 3));
 
         // Adding line chart, bar chart, and pie chart to the panel
-        Graph videoViews = createGraph("line", video, "Views by time ");
-        Graph DifferentVideoViews = createGraph( "bar", video, "Views by time ");
-        Graph viewsMoneyLikes = createGraph( "pie", video, "Views by time ");
+        Graph videoViews = createGraph("line", video, "LineChart graph ");
+        Graph DifferentVideoViews = createGraph( "bar", video, "BarChart graph ");
+        Graph viewsMoneyLikes = createGraph( "pie", video, "PieChart graph ");
 
         chartsPanel.add(videoViews.getChartPanel());
         chartsPanel.add(DifferentVideoViews.getChartPanel());
@@ -121,3 +121,4 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         return detailPanel;
     }
 }
+
