@@ -4,5 +4,6 @@ import com.google.api.services.youtube.model.Video;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public interface Dataset {
-    DefaultCategoryDataset createDataset(Video video);
+    void updateData();
+    DefaultCategoryDataset getDataset();
 }

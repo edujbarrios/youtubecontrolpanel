@@ -8,17 +8,24 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class WaterfallChartGraph extends Graph {
-    private final DefaultCategoryDataset dataset;
+    private final DefaultCategoryDataset _dataset;
     private final String title;
+    private JFreeChart chart;
 
     public WaterfallChartGraph(DefaultCategoryDataset dataset, String title) {
-        this.dataset = dataset;
+        this._dataset = dataset;
         this.title = title;
     }
 
     @Override
     public JFreeChart createChart() {
-        JFreeChart chart = ChartFactory.createBarChart(
+        updateChart(_dataset);
+        return chart;
+    }
+
+    @Override
+    public void updateChart(DefaultCategoryDataset dataset) {
+        chart = ChartFactory.createBarChart(
                 title, // chart title
                 "Category",      // domain axis label
                 "Value",         // range axis label
@@ -36,7 +43,5 @@ public class WaterfallChartGraph extends Graph {
         // Por ejemplo, configurar colores, visibilidad de barras, etc.
 
         plot.setRenderer(renderer);
-
-        return chart;
     }
 }

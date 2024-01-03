@@ -8,6 +8,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 public class RingChartGraph extends Graph {
     private final DefaultCategoryDataset categoryDataset;
     private final String title;
+    private JFreeChart chart;
 
     public RingChartGraph(DefaultCategoryDataset dataset, String title) {
         this.categoryDataset = dataset;
@@ -16,17 +17,8 @@ public class RingChartGraph extends Graph {
 
     @Override
     public JFreeChart createChart() {
-        // Convert DefaultCategoryDataset to DefaultPieDataset
-        DefaultPieDataset pieDataset = createPieDatasetFromCategoryDataset(categoryDataset);
-
-        // Use the correct method createRingChart for creating a ring chart
-        return ChartFactory.createRingChart(
-                title, // chart title
-                pieDataset,          // data
-                true,                // include legend
-                true,                // tooltips
-                false                // urls
-        );
+        updateChart(categoryDataset);
+        return chart;
     }
 
     private DefaultPieDataset createPieDatasetFromCategoryDataset(DefaultCategoryDataset categoryDataset) {
@@ -42,5 +34,20 @@ public class RingChartGraph extends Graph {
         }
 
         return pieDataset;
+    }
+
+    @Override
+    public void updateChart(DefaultCategoryDataset dataset) {
+        // Convert DefaultCategoryDataset to DefaultPieDataset
+        DefaultPieDataset pieDataset = createPieDatasetFromCategoryDataset(categoryDataset);
+
+        // Use the correct method createRingChart for creating a ring chart
+        chart = ChartFactory.createRingChart(
+                title, // chart title
+                pieDataset,          // data
+                true,                // include legend
+                true,                // tooltips
+                false                // urls
+        );
     }
 }

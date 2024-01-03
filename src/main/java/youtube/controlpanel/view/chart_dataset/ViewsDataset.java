@@ -4,20 +4,32 @@ import com.google.api.services.youtube.model.Video;
 import org.jfree.data.category.DefaultCategoryDataset;
 import youtube.controlpanel.model.resources.YouTubeEarningsCalculator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ViewsDataset implements Dataset {
+    DefaultCategoryDataset dataset;
+    Video _video;
+
+    public ViewsDataset(Video video) {
+        dataset = new DefaultCategoryDataset();
+        _video = video;
+    }
 
     // Creates a dataset for the charts based on video statistics
     @Override
-    public DefaultCategoryDataset createDataset(Video video) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    public void updateData() {
+        String series = "Video Views";
 
-        String series = "Video Details";
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String currentDateTime = dateFormat.format(currentDate);
 
-        dataset.addValue(video.getStatistics().getLikeCount(), series, "Likes");
-        dataset.addValue(video.getStatistics().getViewCount(), series, "Views");
-        dataset.addValue(video.getStatistics().getCommentCount(), series, "Comments");
-        dataset.addValue(YouTubeEarningsCalculator.calculateAdjustedEarnings(video), series, "Estimated Earnings");
+        dataset.addValue(_video.getStatistics().getViewCount(), series, currentDateTime);
+    }
 
+    @Override
+    public DefaultCategoryDataset getDataset() {
         return dataset;
     }
 }

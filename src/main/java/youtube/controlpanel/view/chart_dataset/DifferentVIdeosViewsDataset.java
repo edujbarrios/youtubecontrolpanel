@@ -6,18 +6,24 @@ import youtube.controlpanel.model.resources.YouTubeEarningsCalculator;
 
 public class DifferentVIdeosViewsDataset implements Dataset {
 
+    DefaultCategoryDataset dataset;
+    Video _video;
+
+    public DifferentVIdeosViewsDataset(Video video) {
+        dataset = new DefaultCategoryDataset();
+        _video = video;
+    }
+
     // Creates a dataset for the charts based on video statistics
     @Override
-    public DefaultCategoryDataset createDataset(Video video) {
+    public void updateData() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        String series = "Video Views";
+        dataset.addValue(_video.getStatistics().getViewCount(), series, "Views");
+    }
 
-        String series = "Video Details";
-
-        dataset.addValue(video.getStatistics().getLikeCount(), series, "Likes");
-        dataset.addValue(video.getStatistics().getViewCount(), series, "Views");
-        dataset.addValue(video.getStatistics().getCommentCount(), series, "Comments");
-        dataset.addValue(YouTubeEarningsCalculator.calculateAdjustedEarnings(video), series, "Estimated Earnings");
-
+    @Override
+    public DefaultCategoryDataset getDataset() {
         return dataset;
     }
 }

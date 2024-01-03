@@ -6,16 +6,22 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class BarChartGraph extends Graph {
-    private final DefaultCategoryDataset dataset;
+    private final DefaultCategoryDataset _dataset;
     private final String title;
+    private JFreeChart chart;
     public BarChartGraph(DefaultCategoryDataset dataset, String title) {
-        this.dataset = dataset;
+        this._dataset = dataset;
         this.title = title;
     }
     @Override
     public JFreeChart createChart() {
-        // Use the correct method createBarChart for creating a bar chart
-        return ChartFactory.createBarChart(
+        updateChart(_dataset);
+        return chart;
+    }
+
+    @Override
+    public void updateChart(DefaultCategoryDataset dataset) {
+        chart = ChartFactory.createBarChart(
                 title, // chart title
                 "Time",              // domain axis label
                 "Value",       // range axis label

@@ -12,6 +12,8 @@ import youtube.controlpanel.view.observer.YouTubeDataObserver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 // The main view class for the YouTube Control Panel
@@ -22,6 +24,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
     // Panels for displaying video details and list of videos
     private JPanel detailsPanel, videosPanel, graphsPanel;
+    private Timer timer;
 
     // Constructor to initialize the view with the main frame
     public ControlPanelView(JFrame frame) {
@@ -47,12 +50,13 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         detailsPanel.add(videoDetailsPanel, BorderLayout.CENTER);
 
         // Añadir los widgets de gráficos al marco
-        graphsPanel.add(createChartWidget("Video Views", createGraph("line", video, "LineChart Graph")));
-        graphsPanel.add(createChartWidget("Different Video Views", createGraph("bar", video, "BarChart Graph")));
-        graphsPanel.add(createChartWidget("Views, Money, Likes", createGraph("pie", video, "PieChart Graph")));
-        graphsPanel.add(createChartWidget("Area Chart", createGraph("area", video, "AreaChart Graph")));
-        graphsPanel.add(createChartWidget("Ring Chart", createGraph("ring", video, "RingChart Graph")));
-        graphsPanel.add(createChartWidget("Waterfall Chart", createGraph("waterfall", video, "WaterfallChart Graph"))); // Añadir widget de gráfico de cascada
+        graphsPanel.add(createChartWidget("Video Views", createGraph("line", video, "Views overtime")));
+
+        // graphsPanel.add(createChartWidget("Different Video Views", createGraph("bar", video, "BarChart Graph")));
+        // graphsPanel.add(createChartWidget("Views, Money, Likes", createGraph("pie", video, "PieChart Graph")));
+        // graphsPanel.add(createChartWidget("Area Chart", createGraph("area", video, "AreaChart Graph")));
+        // graphsPanel.add(createChartWidget("Ring Chart", createGraph("ring", video, "RingChart Graph")));
+        // graphsPanel.add(createChartWidget("Waterfall Chart", createGraph("waterfall", video, "WaterfallChart Graph"))); // Añadir widget de gráfico de cascada
 
         mainFrame.add(graphsPanel, BorderLayout.EAST);
         mainFrame.add(detailsPanel, BorderLayout.WEST);
@@ -80,10 +84,25 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
     // Adds a chart to the specified panel based on the chart type
     private Graph createGraph(String chartType, Video video, String title) {
-        Dataset viewsDataset = new ViewsDataset();
-        DefaultCategoryDataset dataset = viewsDataset.createDataset(video);
+        if (timer != null) timer.stop();
+        Dataset viewsDataset = new ViewsDataset(video);
+        viewsDataset.updateData();
         GraphFactory graphFactory = new GraphFactory();
-        return graphFactory.createGraph(chartType, dataset, title);
+
+        Graph g = graphFactory.createGraph(chartType, viewsDataset.getDataset(), title);
+        timer = new Timer(2000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewsDataset.updateData();
+                g.updateChart(viewsDataset.getDataset());
+                graphsPanel.removeAll();
+                graphsPanel.add(createChartWidget("Video Views", g));
+                mainFrame.pack();
+            }
+        });
+        timer.start();
+
+        return g;
     }
 
     // Updates the view with the latest list of videos

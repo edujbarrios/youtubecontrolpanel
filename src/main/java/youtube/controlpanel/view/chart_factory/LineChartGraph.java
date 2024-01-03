@@ -7,17 +7,23 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class LineChartGraph extends Graph {
-    private final DefaultCategoryDataset dataset;
+    private final DefaultCategoryDataset _dataset;
     private final String title;
+    private JFreeChart chart;
     public LineChartGraph(DefaultCategoryDataset dataset, String title) {
-        this.dataset = dataset;
+        this._dataset = dataset;
         this.title = title;
     }
 
     @Override
     public JFreeChart createChart() {
-        // Asegurándose de utilizar la sobrecarga correcta del método createLineChart
-        return ChartFactory.createLineChart(
+        updateChart(_dataset);
+        return chart;
+    }
+
+    @Override
+    public void updateChart(DefaultCategoryDataset dataset) {
+        chart = ChartFactory.createLineChart(
                 title, // chart title
                 "Time",              // domain axis label
                 "Value",       // range axis label
