@@ -1,5 +1,7 @@
 # 🎥 Youtube Control Panel
 
+[![Java CI with Maven](https://github.com/edujbarrios/youtubecontrolpanel/actions/workflows/maven.yml/badge.svg)](https://github.com/edujbarrios/youtubecontrolpanel/actions/workflows/maven.yml)
+
 ## 🌟 Introduction
 Welcome to the Youtube Control Panel project! This Java-based application is an advanced implementation of the Model-View-Controller (MVC) pattern, encapsulating various other design patterns like Observer, Factory, State, and Strategy to enhance functionality and maintainability.
 
