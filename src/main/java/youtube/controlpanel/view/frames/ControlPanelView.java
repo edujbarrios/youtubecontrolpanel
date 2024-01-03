@@ -1,9 +1,9 @@
-package youtube.controlpanel.view.frames;
+w.frames;
 
 import com.google.api.services.youtube.model.Video;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.category.DefaultCategoryDataset;
-import youtube.controlpanel.model.calculator.YouTubeEarningsCalculator;
+import youtube.controlpanel.model.YouTubeEarningsCalculator;
 import youtube.controlpanel.view.chart_dataset.Dataset;
 import youtube.controlpanel.view.chart_dataset.ViewsDataset;
 import youtube.controlpanel.view.chart_factory.Graph;
