@@ -1,4 +1,4 @@
-package youtube.controlpanel.model.resources;
+package youtube.controlpanel.model;
 
 import com.google.api.services.youtube.model.Video;
 
