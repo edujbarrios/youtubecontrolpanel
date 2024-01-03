@@ -1,5 +1,3 @@
-w.frames;
-
 import com.google.api.services.youtube.model.Video;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.category.DefaultCategoryDataset;
