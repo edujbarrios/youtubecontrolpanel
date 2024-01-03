@@ -1,7 +1,9 @@
+package youtube.controlpanel.view.frames;
+
 import com.google.api.services.youtube.model.Video;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.category.DefaultCategoryDataset;
-import youtube.controlpanel.model.YouTubeEarningsCalculator;
+import youtube.controlpanel.model.resources.YoutubeAPIManager;
 import youtube.controlpanel.view.chart_dataset.Dataset;
 import youtube.controlpanel.view.chart_dataset.ViewsDataset;
 import youtube.controlpanel.view.chart_factory.Graph;
@@ -101,7 +103,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         videoDetailsPanel.add(createDetailPanel("Views: " + video.getStatistics().getViewCount()));
         videoDetailsPanel.add(createDetailPanel("Comments: " + video.getStatistics().getCommentCount()));
         videoDetailsPanel.add(createDetailPanel("Estimated Earnings of the video: $" +
-                String.format("%.2f", YouTubeEarningsCalculator.calculateAdjustedEarnings(video))));
+                String.format("%.2f", YoutubeAPIManager.YouTubeEarningsCalculator.calculateAdjustedEarnings(video))));
         detailsPanel.add(videoDetailsPanel, BorderLayout.NORTH);
     }
 
