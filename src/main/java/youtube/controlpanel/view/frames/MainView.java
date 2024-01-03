@@ -46,7 +46,7 @@ public class MainView extends JFrame {
         topPanel.add(urlTextField);
         topPanel.add(fetchButton);
 
-        add(topPanel, BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
     }
 
     private void addObserver(YouTubeDataObserver observer) {
