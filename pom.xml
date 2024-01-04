@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>youtube.controlpanel</groupId>
+    <groupId>youtubeControlPanel</groupId>
     <artifactId>YouTubeControlPanel</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -15,28 +15,47 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-<dependencies>
-    <!-- JFreeChart Dependency -->
-    <dependency>
-        <groupId>org.jfree</groupId>
-        <artifactId>jfreechart</artifactId>
-        <version>1.5.3</version>
-    </dependency>
+    <dependencies>
+        <!-- JFreeChart Dependency -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.3</version>
+        </dependency>
 
-    <!-- JCommon Dependency -->
-    <dependency>
-        <groupId>org.jfree</groupId>
-        <artifactId>jcommon</artifactId>
-        <version>1.0.24</version>
-    </dependency>
+        <!-- JCommon Dependency -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.24</version>
+        </dependency>
 
-    <!-- YouTube Data API Java client library -->
-    <dependency>
-        <groupId>com.google.apis</groupId>
-        <artifactId>google-api-services-youtube</artifactId>
-        <version>v3-rev222-1.25.0</version>
-    </dependency>
-</dependencies>
+        <!-- YouTube Data API Java client library -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-youtube</artifactId>
+            <version>v3-rev222-1.25.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Plugin de Maven para crear un JAR ejecutable -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- Punto de entrada principal del JAR -->
+                            <mainClass>youtube.controlpanel.Client</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
 
