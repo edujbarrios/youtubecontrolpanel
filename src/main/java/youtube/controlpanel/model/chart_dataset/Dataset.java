@@ -4,5 +4,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 public interface Dataset {
     void updateData();
-    DefaultCategoryDataset getDataset();
+    DefaultCategoryDataset getViewsDataset();
+    DefaultCategoryDataset getLikesDataset();
+    DefaultCategoryDataset getCommentsDataset();
+    DefaultCategoryDataset getEarningsDataset();
 }

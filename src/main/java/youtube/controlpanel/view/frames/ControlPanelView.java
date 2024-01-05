@@ -3,7 +3,7 @@ package youtube.controlpanel.view.frames;
 import com.google.api.services.youtube.model.Video;
 import org.jfree.chart.ChartPanel;
 import youtube.controlpanel.model.chart_dataset.Dataset;
-import youtube.controlpanel.model.chart_dataset.ViewsDataset;
+import youtube.controlpanel.model.chart_dataset.ChartDataset;
 import youtube.controlpanel.view.chart_factory.Graph;
 import youtube.controlpanel.view.chart_factory.GraphFactory;
 import youtube.controlpanel.view.observer.YouTubeDataObserver;
@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 // The main view class for the YouTube Control Panel
@@ -70,16 +69,15 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
         // Add selected graph based on the selected chart using switch case
         switch (selectedChart) {
-            case "BarChart Graph" -> createGraph("bar", "BarChart Graph");
-            case "PieChart Graph" -> createGraph("pie", "PieChart Graph");
-            case "AreaChart Graph" -> createGraph("area", "AreaChart Graph");
-            case "RingChart Graph" -> createGraph("ring", "RingChart Graph");
-            case "WaterfallChart Graph" -> createGraph("waterfall", "WaterfallChart Graph");
+            case "BarChart Graph" -> createGraphs("bar", "BarChart Graph");
+            case "PieChart Graph" -> createGraphs("pie", "PieChart Graph");
+            case "AreaChart Graph" -> createGraphs("area", "AreaChart Graph");
+            case "RingChart Graph" -> createGraphs("ring", "RingChart Graph");
+            case "WaterfallChart Graph" -> createGraphs("waterfall", "WaterfallChart Graph");
         }
         revalidate();
         repaint();
     }
-
 
     // Wraps a graph in a styled widget panel
     private JPanel createChartWidget(String title, Graph graph) {
@@ -98,26 +96,35 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     }
 
     // Adds a chart to the specified panel based on the chart type
-    private void createGraph(String chartType, String title) {
+    private void createGraphs(String chartType, String title) {
         if (timer != null) timer.stop();
-        Dataset viewsDataset = new ViewsDataset(video);
-        viewsDataset.updateData();
+        Dataset chartDataset = new ChartDataset(video);
+        chartDataset.updateData();
         GraphFactory graphFactory = new GraphFactory();
 
-        Graph g = graphFactory.createGraph(chartType, viewsDataset.getDataset(), title);
+        Graph g = graphFactory.createGraph(chartType, chartDataset.getViewsDataset(), title);
+        Graph gLikes = graphFactory.createGraph(chartType, chartDataset.getLikesDataset(), title);
+        Graph gComments = graphFactory.createGraph(chartType, chartDataset.getCommentsDataset(), title);
+        Graph gEarnings = graphFactory.createGraph(chartType, chartDataset.getEarningsDataset(), title);
         timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewsDataset.updateData();
-                g.updateChart(viewsDataset.getDataset());
+                chartDataset.updateData();
+
+                g.updateChart(chartDataset.getViewsDataset());
+                gLikes.updateChart(chartDataset.getLikesDataset());
+                gComments.updateChart(chartDataset.getCommentsDataset());
+                gEarnings.updateChart(chartDataset.getEarningsDataset());
+
                 graphsPanel.removeAll();
                 graphsPanel.add(createChartWidget("Video Views", g));
+                graphsPanel.add(createChartWidget("Video Likes", gLikes));
+                graphsPanel.add(createChartWidget("Video Comments", gComments));
+                graphsPanel.add(createChartWidget("Video Earnings", gEarnings));
                 mainFrame.pack();
             }
         });
         timer.start();
-
-        graphsPanel.add(createChartWidget("Video Views", g));
     }
 
     // Updates the view with the latest list of videos
