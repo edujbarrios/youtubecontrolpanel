@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 // The main view class for the YouTube Control Panel
@@ -23,7 +24,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     // Panels for displaying video details and list of videos
     private JPanel detailsPanel, videosPanel, graphsPanel;
     private Timer timer;
-
+    private Video video;
     // Constructor to initialize the view with the main frame
     public ControlPanelView(JFrame frame) {
         mainFrame = frame;
@@ -34,6 +35,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
     // Displays the details of a selected video
     public void displayVideoDetails(Video video, String channelName) {
+        this.video =video;
         detailsPanel.removeAll();
         graphsPanel.removeAll();
         detailsPanel.setLayout(new BorderLayout());
@@ -47,52 +49,12 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         videoDetailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
         detailsPanel.add(videoDetailsPanel, BorderLayout.CENTER);
 
-        // Create checkboxes
-        JCheckBox barChartCheckbox = new JCheckBox("BarChart Graph");
-        JCheckBox pieChartCheckbox = new JCheckBox("PieChart Graph");
-        JCheckBox areaChartCheckbox = new JCheckBox("AreaChart Graph");
-        JCheckBox ringChartCheckbox = new JCheckBox("RingChart Graph");
-        JCheckBox waterfallChartCheckbox = new JCheckBox("WaterfallChart Graph");
 
         // Add checkboxes to a panel
-        JPanel checkboxPanel = new JPanel();
-        checkboxPanel.setLayout(new GridLayout(7, 1));
-        checkboxPanel.add(barChartCheckbox);
-        checkboxPanel.add(pieChartCheckbox);
-        checkboxPanel.add(areaChartCheckbox);
-        checkboxPanel.add(ringChartCheckbox);
-        checkboxPanel.add(waterfallChartCheckbox);
-        // Create button to apply selection
-        JButton applyButton = new JButton("Apply Selection");
+        JPanel checkboxPanel = new CheckboxPanel(this);
 
-        // Add action listener to apply button
-        applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                graphsPanel.removeAll();
 
-                // Add selected graphs based on checkboxes
-                if (barChartCheckbox.isSelected()) {
-                    graphsPanel.add(createChartWidget("Different Video Views", createGraph("bar", video,"BarChart Graph")));
-                }
-                if (pieChartCheckbox.isSelected()) {
-                    graphsPanel.add(createChartWidget("Views, Money, Likes", createGraph("pie", video,"PieChart Graph")));
-                }
-                if (areaChartCheckbox.isSelected()) {
-                    graphsPanel.add(createChartWidget("Area Chart", createGraph("area", video,"AreaChart Graph")));
-                }
-                if (ringChartCheckbox.isSelected()) {
-                    graphsPanel.add(createChartWidget("Ring Chart", createGraph("ring",video, "RingChart Graph")));
-                }
-                if (waterfallChartCheckbox.isSelected()) {
-                    graphsPanel.add(createChartWidget("Waterfall Chart", createGraph("waterfall", video,"WaterfallChart Graph")));
-                }
 
-                revalidate();
-                repaint();
-            }
-        });
-        checkboxPanel.add(applyButton);
 
         mainFrame.add(checkboxPanel);
         mainFrame.add(graphsPanel, BorderLayout.EAST);
@@ -101,6 +63,31 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
         // Call to the function to display details in the terminal
         TerminalDataDisplay.displayVideoDetails(video, channelName);
+    }
+
+    public void displayCharts(List<JCheckBox> checkBoxes){
+        graphsPanel.removeAll();
+
+                // Add selected graphs based on checkboxes
+                if (checkBoxes.get(0).isSelected()) {
+                    graphsPanel.add(createChartWidget("Different Video Views", createGraph("bar","BarChart Graph")));
+                }
+                if (checkBoxes.get(1).isSelected()) {
+                    graphsPanel.add(createChartWidget("Views, Money, Likes", createGraph("pie","PieChart Graph")));
+                }
+                if (checkBoxes.get(2).isSelected()) {
+                    graphsPanel.add(createChartWidget("Area Chart", createGraph("area","AreaChart Graph")));
+                }
+                if (checkBoxes.get(3).isSelected()) {
+                    graphsPanel.add(createChartWidget("Ring Chart", createGraph("ring", "RingChart Graph")));
+                }
+                if (checkBoxes.get(4).isSelected()) {
+                    graphsPanel.add(createChartWidget("Waterfall Chart", createGraph("waterfall","WaterfallChart Graph")));
+                }
+
+        revalidate();
+        repaint();
+
     }
 
     // Wraps a graph in a styled widget panel
@@ -120,7 +107,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     }
 
     // Adds a chart to the specified panel based on the chart type
-    private Graph createGraph(String chartType, Video video, String title) {
+    private Graph createGraph(String chartType, String title) {
         if (timer != null) timer.stop();
         Dataset viewsDataset = new ViewsDataset(video);
         viewsDataset.updateData();
@@ -132,7 +119,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
             public void actionPerformed(ActionEvent e) {
                 viewsDataset.updateData();
                 g.updateChart(viewsDataset.getDataset());
-                //graphsPanel.removeAll();
+                graphsPanel.removeAll();
                 graphsPanel.add(createChartWidget("Video Views", g));
                 mainFrame.pack();
             }
