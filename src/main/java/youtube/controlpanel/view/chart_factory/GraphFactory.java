@@ -8,11 +8,11 @@ public class GraphFactory {
     public Graph createGraph(String type, Dataset dataset, String title) {
         return switch (type) {
             case "line" -> new LineChartGraph((DefaultCategoryDataset) dataset, title);
-            // case "bar" -> new BarChartGraph((DefaultCategoryDataset) dataset, title);
-            // case "pie" -> new PieChartGraph((DefaultCategoryDataset) dataset, title);
-            // case "area" -> new AreaChartGraph((DefaultCategoryDataset) dataset, title);
-            // case "ring" -> new RingChartGraph((DefaultCategoryDataset) dataset, title);
-            // case "waterfall" -> new WaterfallChartGraph((DefaultCategoryDataset) dataset, title); // Añadido gráfico de cascada
+             case "bar" -> new BarChartGraph((DefaultCategoryDataset) dataset, title);
+             case "pie" -> new PieChartGraph((DefaultCategoryDataset) dataset, title);
+             case "area" -> new AreaChartGraph((DefaultCategoryDataset) dataset, title);
+             case "ring" -> new RingChartGraph((DefaultCategoryDataset) dataset, title);
+             case "waterfall" -> new WaterfallChartGraph((DefaultCategoryDataset) dataset, title); // Añadido gráfico de cascada
             default -> throw new IllegalArgumentException("Unknown graph type: " + type);
         };
     }
