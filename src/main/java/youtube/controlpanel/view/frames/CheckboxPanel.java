@@ -8,37 +8,31 @@ import java.util.ArrayList;
 
 public class CheckboxPanel extends JPanel {
     ControlPanelView controlPanelView;
-    ArrayList<JCheckBox> checkboxes = new ArrayList<JCheckBox>();
-    CheckboxPanel(ControlPanelView controlPanelView){
-        this.controlPanelView =controlPanelView;
+    JComboBox<String> chartComboBox;
+    JButton applyButton;
 
-        // Create checkboxes
-        JCheckBox barChartCheckbox = new JCheckBox("BarChart Graph");
-        JCheckBox pieChartCheckbox = new JCheckBox("PieChart Graph");
-        JCheckBox areaChartCheckbox = new JCheckBox("AreaChart Graph");
-        JCheckBox ringChartCheckbox = new JCheckBox("RingChart Graph");
-        JCheckBox waterfallChartCheckbox = new JCheckBox("WaterfallChart Graph");
-        checkboxes.add(barChartCheckbox);
-        checkboxes.add(pieChartCheckbox);
-        checkboxes.add(areaChartCheckbox);
-        checkboxes.add(ringChartCheckbox);
-        checkboxes.add(waterfallChartCheckbox);
-        setLayout(new GridLayout(7, 1));
-        add(barChartCheckbox);
-        add(pieChartCheckbox);
-        add(areaChartCheckbox);
-        add(ringChartCheckbox);
-        add(waterfallChartCheckbox);
+    CheckboxPanel(ControlPanelView controlPanelView) {
+        this.controlPanelView = controlPanelView;
+
+        // Create combo box with chart options
+        String[] chartOptions = {"BarChart Graph", "PieChart Graph", "AreaChart Graph", "RingChart Graph", "WaterfallChart Graph"};
+        chartComboBox = new JComboBox<>(chartOptions);
+
         // Create button to apply selection
-        JButton applyButton = new JButton("Apply Selection");
+        applyButton = new JButton("Apply Selection");
+
         // Add action listener to apply button
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controlPanelView.displayCharts(checkboxes);
+                String selectedChart = (String) chartComboBox.getSelectedItem();
+                controlPanelView.displayChart(selectedChart);
             }
         });
-        add(applyButton);
 
+        // Set layout and add components
+        setLayout(new GridLayout(2, 1));
+        add(chartComboBox);
+        add(applyButton);
     }
 }

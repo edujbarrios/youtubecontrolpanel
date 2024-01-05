@@ -65,30 +65,21 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         TerminalDataDisplay.displayVideoDetails(video, channelName);
     }
 
-    public void displayCharts(List<JCheckBox> checkBoxes){
+    public void displayChart(String selectedChart) {
         graphsPanel.removeAll();
 
-                // Add selected graphs based on checkboxes
-                if (checkBoxes.get(0).isSelected()) {
-                    createGraph("bar","BarChart Graph");
-                }
-                if (checkBoxes.get(1).isSelected()) {
-                    createGraph("pie","PieChart Graph");
-                }
-                if (checkBoxes.get(2).isSelected()) {
-                    createGraph("area","AreaChart Graph");
-                }
-                if (checkBoxes.get(3).isSelected()) {
-                    createGraph("ring", "RingChart Graph");
-                }
-                if (checkBoxes.get(4).isSelected()) {
-                   createGraph("waterfall","WaterfallChart Graph");
-                }
-
+        // Add selected graph based on the selected chart using switch case
+        switch (selectedChart) {
+            case "BarChart Graph" -> createGraph("bar", "BarChart Graph");
+            case "PieChart Graph" -> createGraph("pie", "PieChart Graph");
+            case "AreaChart Graph" -> createGraph("area", "AreaChart Graph");
+            case "RingChart Graph" -> createGraph("ring", "RingChart Graph");
+            case "WaterfallChart Graph" -> createGraph("waterfall", "WaterfallChart Graph");
+        }
         revalidate();
         repaint();
-
     }
+
 
     // Wraps a graph in a styled widget panel
     private JPanel createChartWidget(String title, Graph graph) {
