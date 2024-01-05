@@ -70,19 +70,19 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
                 // Add selected graphs based on checkboxes
                 if (checkBoxes.get(0).isSelected()) {
-                    graphsPanel.add(createChartWidget("Different Video Views", createGraph("bar","BarChart Graph")));
+                    createGraph("bar","BarChart Graph");
                 }
                 if (checkBoxes.get(1).isSelected()) {
-                    graphsPanel.add(createChartWidget("Views, Money, Likes", createGraph("pie","PieChart Graph")));
+                    createGraph("pie","PieChart Graph");
                 }
                 if (checkBoxes.get(2).isSelected()) {
-                    graphsPanel.add(createChartWidget("Area Chart", createGraph("area","AreaChart Graph")));
+                    createGraph("area","AreaChart Graph");
                 }
                 if (checkBoxes.get(3).isSelected()) {
-                    graphsPanel.add(createChartWidget("Ring Chart", createGraph("ring", "RingChart Graph")));
+                    createGraph("ring", "RingChart Graph");
                 }
                 if (checkBoxes.get(4).isSelected()) {
-                    graphsPanel.add(createChartWidget("Waterfall Chart", createGraph("waterfall","WaterfallChart Graph")));
+                   createGraph("waterfall","WaterfallChart Graph");
                 }
 
         revalidate();
@@ -107,7 +107,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     }
 
     // Adds a chart to the specified panel based on the chart type
-    private Graph createGraph(String chartType, String title) {
+    private void createGraph(String chartType, String title) {
         if (timer != null) timer.stop();
         Dataset viewsDataset = new ViewsDataset(video);
         viewsDataset.updateData();
@@ -126,7 +126,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         });
         timer.start();
 
-        return g;
+        graphsPanel.add(createChartWidget("Video Views", g));
     }
 
     // Updates the view with the latest list of videos
