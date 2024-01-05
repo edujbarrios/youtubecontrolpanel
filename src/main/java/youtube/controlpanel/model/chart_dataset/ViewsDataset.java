@@ -1,15 +1,16 @@
-package youtube.controlpanel.view.chart_dataset;
+package youtube.controlpanel.model.chart_dataset;
 
 import com.google.api.services.youtube.model.Video;
 import org.jfree.data.category.DefaultCategoryDataset;
-import youtube.controlpanel.model.resources.YouTubeEarningsCalculator;
 
-public class SubscribersDataset implements Dataset {
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+public class ViewsDataset implements Dataset {
     DefaultCategoryDataset dataset;
     Video _video;
 
-    public SubscribersDataset(Video video) {
+    public ViewsDataset(Video video) {
         dataset = new DefaultCategoryDataset();
         _video = video;
     }
@@ -17,9 +18,13 @@ public class SubscribersDataset implements Dataset {
     // Creates a dataset for the charts based on video statistics
     @Override
     public void updateData() {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         String series = "Video Views";
-        dataset.addValue(_video.getStatistics().getViewCount(), series, "Views");
+
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String currentDateTime = dateFormat.format(currentDate);
+
+        dataset.addValue(_video.getStatistics().getViewCount(), series, currentDateTime);
     }
 
     @Override
