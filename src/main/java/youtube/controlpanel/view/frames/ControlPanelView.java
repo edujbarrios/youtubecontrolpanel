@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 // The main view class for the YouTube Control Panel
@@ -56,6 +57,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
 
         mainFrame.add(dropdownPanel);
+
         mainFrame.add(graphsPanel, BorderLayout.EAST);
         mainFrame.add(detailsPanel, BorderLayout.WEST);
         mainFrame.pack();
@@ -64,17 +66,17 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         TerminalDataDisplay.displayVideoDetails(video, channelName);
     }
 
-    public void displayChart(String selectedChart) {
+    public void displayChart(String selectedChart, ArrayList<JCheckBox> checkboxes) {
         graphsPanel.removeAll();
 
         // Add selected graph based on the selected chart using switch case
         switch (selectedChart) {
-            case "BarChart Graph" -> createGraphs("bar", "BarChart Graph");
-            case "PieChart Graph" -> createGraphs("pie", "PieChart Graph");
-            case "AreaChart Graph" -> createGraphs("area", "AreaChart Graph");
-            case "RingChart Graph" -> createGraphs("ring", "RingChart Graph");
-            case "WaterfallChart Graph" -> createGraphs("waterfall", "WaterfallChart Graph");
-            case "LineChart Graph"-> createGraphs("line", "LineChart Graph");
+            case "BarChart Graph" -> createGraphs("bar", "BarChart Graph", checkboxes);
+            case "PieChart Graph" -> createGraphs("pie", "PieChart Graph", checkboxes);
+            case "AreaChart Graph" -> createGraphs("area", "AreaChart Graph", checkboxes);
+            case "RingChart Graph" -> createGraphs("ring", "RingChart Graph", checkboxes);
+            case "WaterfallChart Graph" -> createGraphs("waterfall", "WaterfallChart Graph", checkboxes);
+            case "LineChart Graph"-> createGraphs("line", "LineChart Graph", checkboxes);
         }
         revalidate();
         repaint();
@@ -97,7 +99,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     }
 
     // Adds a chart to the specified panel based on the chart type
-    private void createGraphs(String chartType, String title) {
+    private void createGraphs(String chartType, String title,ArrayList<JCheckBox>  checkboxes) {
         if (timer != null) timer.stop();
         Dataset chartDataset = new ChartDataset(video);
         chartDataset.updateData();
@@ -116,12 +118,34 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
                 gLikes.updateChart(chartDataset.getLikesDataset());
                 gComments.updateChart(chartDataset.getCommentsDataset());
                 gEarnings.updateChart(chartDataset.getEarningsDataset());
-
                 graphsPanel.removeAll();
-                graphsPanel.add(createChartWidget("Video Views", g));
-                graphsPanel.add(createChartWidget("Video Likes", gLikes));
-                graphsPanel.add(createChartWidget("Video Comments", gComments));
-                graphsPanel.add(createChartWidget("Video Earnings", gEarnings));
+// Assuming checkboxes is your list of JCheckBox instances
+                for (JCheckBox checkBox : checkboxes) {
+                    if (checkBox.isSelected()) {
+                        String checkboxText = checkBox.getText();
+                        switch (checkboxText) {
+                            case "Video views":
+                                graphsPanel.add(createChartWidget("Video Views", g));
+                                break;
+
+                            case "Video likes":
+                                graphsPanel.add(createChartWidget("Video Likes", gLikes));
+                                break;
+
+                            case "Video comments":
+                                graphsPanel.add(createChartWidget("Video Comments", gComments));
+                                break;
+
+                            case "Money earning":
+                                graphsPanel.add(createChartWidget("Video Earnings", gEarnings));
+                                break;
+
+                            // Add more cases for additional checkboxes if needed
+                        }
+                    }
+                }
+
+
                 mainFrame.pack();
             }
         });

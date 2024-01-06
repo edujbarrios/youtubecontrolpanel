@@ -19,19 +19,21 @@ public class DropdownMenuPanel extends JPanel {
 
         // Create button to apply selection
         applyButton = new JButton("Apply Selection");
-
+        CheckboxPanel checkboxPanel = new CheckboxPanel();
         // Add action listener to apply button
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedChart = (String) chartComboBox.getSelectedItem();
-                controlPanelView.displayChart(selectedChart);
+                controlPanelView.displayChart(selectedChart,checkboxPanel.getCheckboxes());
             }
         });
 
         // Set layout and add components
         setLayout(new GridLayout(2, 1));
         add(chartComboBox);
+
+        add(checkboxPanel);
         add(applyButton);
     }
 }
