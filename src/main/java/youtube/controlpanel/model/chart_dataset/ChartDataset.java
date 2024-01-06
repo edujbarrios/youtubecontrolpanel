@@ -38,6 +38,9 @@ public class ChartDataset implements Dataset {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String currentDateTime = dateFormat.format(currentDate);
 
+        VideoData videoData = new VideoData();
+        _video = videoData.retrieveData("https://www.youtube.com/watch?v=" + _video.getId());
+
         datasets.get(0).addValue(_video.getStatistics().getViewCount(), series, currentDateTime);
         datasets.get(1).addValue(_video.getStatistics().getLikeCount(), series, currentDateTime);
         datasets.get(2).addValue(_video.getStatistics().getCommentCount(), series, currentDateTime);

@@ -22,7 +22,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     private JFrame mainFrame;
 
     // Panels for displaying video details and list of videos
-    private JPanel detailsPanel, videosPanel, graphsPanel;
+    private JPanel detailsPanel, videosPanel, graphsPanel, dropdownPanel;
     private Timer timer;
     private Video video;
     // Constructor to initialize the view with the main frame
@@ -31,11 +31,12 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         detailsPanel = new JPanel();
         videosPanel = new JPanel();
         graphsPanel = new JPanel();
+        dropdownPanel = new DropdownMenuPanel(this);
     }
 
     // Displays the details of a selected video
     public void displayVideoDetails(Video video, String channelName) {
-        this.video =video;
+        this.video = video;
         detailsPanel.removeAll();
         graphsPanel.removeAll();
         detailsPanel.setLayout(new BorderLayout());
@@ -49,15 +50,8 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         videoDetailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
         detailsPanel.add(videoDetailsPanel, BorderLayout.CENTER);
 
-
         // Add checkboxes to a panel
-        JPanel dropdownPanel = new DropdownMenuPanel(this);
-
-
-
-
-        mainFrame.add(dropdownPanel);
-
+        if (dropdownPanel.getParent() != mainFrame) mainFrame.add(dropdownPanel);
         mainFrame.add(graphsPanel, BorderLayout.EAST);
         mainFrame.add(detailsPanel, BorderLayout.WEST);
         mainFrame.pack();
