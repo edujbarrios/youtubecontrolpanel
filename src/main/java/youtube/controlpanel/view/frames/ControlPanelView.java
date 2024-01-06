@@ -50,12 +50,12 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
 
 
         // Add checkboxes to a panel
-        JPanel checkboxPanel = new CheckboxPanel(this);
+        JPanel dropdownPanel = new DropdownMenuPanel(this);
 
 
 
 
-        mainFrame.add(checkboxPanel);
+        mainFrame.add(dropdownPanel);
         mainFrame.add(graphsPanel, BorderLayout.EAST);
         mainFrame.add(detailsPanel, BorderLayout.WEST);
         mainFrame.pack();

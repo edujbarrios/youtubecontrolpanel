@@ -4,14 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-public class CheckboxPanel extends JPanel {
+public class DropdownMenuPanel extends JPanel {
     ControlPanelView controlPanelView;
     JComboBox<String> chartComboBox;
     JButton applyButton;
 
-    CheckboxPanel(ControlPanelView controlPanelView) {
+    DropdownMenuPanel(ControlPanelView controlPanelView) {
         this.controlPanelView = controlPanelView;
 
         // Create combo box with chart options
