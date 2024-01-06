@@ -15,7 +15,7 @@ public class CheckboxPanel extends JPanel {
         this.controlPanelView = controlPanelView;
 
         // Create combo box with chart options
-        String[] chartOptions = {"BarChart Graph", "PieChart Graph", "AreaChart Graph", "RingChart Graph", "WaterfallChart Graph"};
+        String[] chartOptions = {"BarChart Graph", "PieChart Graph", "AreaChart Graph", "RingChart Graph", "WaterfallChart Graph", "LineChart Graph"};
         chartComboBox = new JComboBox<>(chartOptions);
 
         // Create button to apply selection

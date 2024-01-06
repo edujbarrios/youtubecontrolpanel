@@ -74,6 +74,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
             case "AreaChart Graph" -> createGraphs("area", "AreaChart Graph");
             case "RingChart Graph" -> createGraphs("ring", "RingChart Graph");
             case "WaterfallChart Graph" -> createGraphs("waterfall", "WaterfallChart Graph");
+            case "LineChart Graph"-> createGraphs("line", "LineChart Graph");
         }
         revalidate();
         repaint();
