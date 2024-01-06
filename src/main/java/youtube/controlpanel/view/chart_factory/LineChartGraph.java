@@ -49,7 +49,7 @@ public class LineChartGraph extends Graph {
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 
         rangeAxis.setLowerBound(firstValueAsDouble);
-        rangeAxis.setUpperBound(lastValueAsDouble+1);
+        rangeAxis.setUpperBound(lastValueAsDouble+10);
     }
 
 }
