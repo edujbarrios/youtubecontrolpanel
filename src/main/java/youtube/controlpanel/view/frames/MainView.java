@@ -69,9 +69,6 @@ public class MainView extends JFrame {
         titlePanel.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre título y subtítulo
         titlePanel.add(subtitleLabel);
 
-        // Añadir el panel de título al marco principal
-        add(titlePanel, BorderLayout.NORTH);
-
         urlTextField = new JTextField(40);
         fetchButton = ButtonFactory.createButton("Fetch Video Details");
 
@@ -84,7 +81,10 @@ public class MainView extends JFrame {
         // Estilo para el panel de entrada
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        add(inputPanel, BorderLayout.CENTER);
+        titlePanel.add(inputPanel);
+
+        // Añadir el panel de título al marco principal
+        add(titlePanel, BorderLayout.NORTH);
     }
 
     private void addObserver(YouTubeDataObserver observer) {
