@@ -33,20 +33,63 @@ public class MainView extends JFrame {
 
     private void createUI() {
         setTitle("YouTube Video Information Viewer");
-        setSize(600, 100);
+        setSize(800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Cargar el logo y escalar la imagen
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/app_logo.png"));
+        Image image = originalIcon.getImage(); // Transform it
+        Image newimg = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        ImageIcon logoIcon = new ImageIcon(newimg);  // transform it back
+
+        // Crear el label del logo
+        JLabel logoLabel = new JLabel(logoIcon);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Crear título y subtítulo
+        JLabel titleLabel = new JLabel("YOUTUBE CONTROL PANEL");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(150, 31, 31)); // Color rojo al estilo de YouTube
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel subtitleLabel = new JLabel("Copy and paste (Control + V) a link of a YouTube channel");
+        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        subtitleLabel.setForeground(Color.DARK_GRAY);
+        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Panel para el logo, título y subtítulo
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Espacio antes del logo
+        titlePanel.add(logoLabel); // Agregar logo encima del título
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre logo y título
+        titlePanel.add(titleLabel);
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre título y subtítulo
+        titlePanel.add(subtitleLabel);
+
+        // Añadir el panel de título al marco principal
+        add(titlePanel, BorderLayout.NORTH);
+
         urlTextField = new JTextField(40);
         fetchButton = new JButton("Fetch Video Details");
+        // Estilo para el botón Fetch
+        fetchButton.setBackground(new Color(205, 32, 31)); // Un rojo más oscuro para el botón
+        fetchButton.setForeground(Color.BLACK);
+        fetchButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        fetchButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        fetchButton.setFocusPainted(false);
 
         fetchButton.addActionListener((ActionEvent e) -> fetchChannelVideos());
 
-        JPanel topPanel = new JPanel();
-        topPanel.add(urlTextField);
-        topPanel.add(fetchButton);
+        JPanel inputPanel = new JPanel();
+        inputPanel.add(urlTextField);
+        inputPanel.add(fetchButton);
 
-        add(topPanel, BorderLayout.NORTH);
+        // Estilo para el panel de entrada
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        add(inputPanel, BorderLayout.CENTER);
     }
 
     private void addObserver(YouTubeDataObserver observer) {
@@ -56,7 +99,12 @@ public class MainView extends JFrame {
     private void fetchChannelVideos() {
         String url = urlTextField.getText();
         if (!LinkParser.isChannelUrl(url)) {
-            JOptionPane.showMessageDialog(this, "Invalid URL: " + url, "Error", JOptionPane.ERROR_MESSAGE);
+            // Usar HTML para personalizar el mensaje de error
+            JOptionPane.showMessageDialog(this,
+                    "<html><body><p style='width: 200px;'>" +
+                            "Invalid URL: <span style='color: red;'>" + url + "</span></p></body></html>",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 

@@ -92,28 +92,33 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         return widgetPanel;
     }
 
-    // Adds a chart to the specified panel based on the chart type
-    private void createGraphs(String chartType, String title,ArrayList<JCheckBox>  checkboxes) {
+    // Método modificado para crear y actualizar gráficos
+    private void createGraphs(String chartType, String title, ArrayList<JCheckBox> checkboxes) {
         if (timer != null) timer.stop();
         Dataset chartDataset = new ChartDataset(video);
         chartDataset.updateData();
         GraphFactory graphFactory = new GraphFactory();
 
+        // Inicializa los gráficos
         Graph g = graphFactory.createGraph(chartType, chartDataset.getViewsDataset(), title);
         Graph gLikes = graphFactory.createGraph(chartType, chartDataset.getLikesDataset(), title);
         Graph gComments = graphFactory.createGraph(chartType, chartDataset.getCommentsDataset(), title);
         Graph gEarnings = graphFactory.createGraph(chartType, chartDataset.getEarningsDataset(), title);
+
+        // Configura el Timer para actualizar los gráficos
         timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 chartDataset.updateData();
 
+                // Actualiza los gráficos con los nuevos datos
                 g.updateChart(chartDataset.getViewsDataset());
                 gLikes.updateChart(chartDataset.getLikesDataset());
                 gComments.updateChart(chartDataset.getCommentsDataset());
                 gEarnings.updateChart(chartDataset.getEarningsDataset());
+
+                // Elimina y vuelve a añadir los gráficos actualizados
                 graphsPanel.removeAll();
-// Assuming checkboxes is your list of JCheckBox instances
                 for (JCheckBox checkBox : checkboxes) {
                     if (checkBox.isSelected()) {
                         String checkboxText = checkBox.getText();
@@ -121,42 +126,43 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
                             case "Video views":
                                 graphsPanel.add(createChartWidget("Video Views", g));
                                 break;
-
                             case "Video likes":
                                 graphsPanel.add(createChartWidget("Video Likes", gLikes));
                                 break;
-
                             case "Video comments":
                                 graphsPanel.add(createChartWidget("Video Comments", gComments));
                                 break;
-
                             case "Money earning":
                                 graphsPanel.add(createChartWidget("Video Earnings", gEarnings));
                                 break;
-
-                            // Add more cases for additional checkboxes if needed
                         }
                     }
                 }
-
-
                 mainFrame.pack();
             }
         });
         timer.start();
     }
 
-    // Updates the view with the latest list of videos
+//updates the videos dependin on the search, and it gives a video list with buttons
     @Override
     public void update(List<Video> videos) {
         videosPanel.removeAll();
         videosPanel.setLayout(new GridLayout(5, 1));
 
-        // Display up to 5 latest videos as buttons
+        // Apply style and display up to 5 latest videos as buttons
         for (int count = 0; count < Math.min(videos.size(), 5); count++) {
             Video video = videos.get(count);
             String videoTitle = video.getSnippet().getTitle();
             JButton videoButton = new JButton(videoTitle);
+
+            // Apply the desired style
+            videoButton.setBackground(new Color(205, 32, 31)); // Same background as fetchButton
+            videoButton.setForeground(Color.BLACK); // Same foreground as fetchButton
+            videoButton.setFont(new Font("Arial", Font.PLAIN, 14)); // Same font as fetchButton
+            videoButton.setBorder(BorderFactory.createRaisedBevelBorder()); // Same border as fetchButton
+            videoButton.setFocusPainted(false);
+
             videoButton.addActionListener(e -> displayVideoDetails(video, video.getSnippet().getChannelTitle()));
             videosPanel.add(videoButton);
         }
@@ -164,6 +170,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         mainFrame.add(videosPanel, BorderLayout.SOUTH);
         mainFrame.pack();
     }
+
 
     // Creates a detail panel with the specified text
     private JPanel createDetailPanel(String detail) {
