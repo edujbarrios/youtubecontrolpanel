@@ -1,3 +1,5 @@
+package youtube.controlpanel.controller;
+
 import javax.swing.*;
 import java.awt.*;
 
