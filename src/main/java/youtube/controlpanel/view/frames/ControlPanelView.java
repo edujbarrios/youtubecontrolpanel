@@ -94,6 +94,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     }
 
     // Método modificado para crear y actualizar gráficos
+    // Método modificado para crear y actualizar gráficos y detalles del video
     private void createGraphs(String chartType, String title, ArrayList<JCheckBox> checkboxes) {
         if (timer != null) timer.stop();
         Dataset chartDataset = new ChartDataset(video);
@@ -106,7 +107,7 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         Graph gComments = graphFactory.createGraph(chartType, chartDataset.getCommentsDataset(), title);
         Graph gEarnings = graphFactory.createGraph(chartType, chartDataset.getEarningsDataset(), title);
 
-        // Configura el Timer para actualizar los gráficos
+        // Configura el Timer para actualizar los gráficos y los detalles del video
         timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,6 +141,9 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
                     }
                 }
                 mainFrame.pack();
+
+                // Actualiza los detalles del video en la terminal
+                TerminalDataDisplay.updateVideoDetails(video, video.getSnippet().getChannelTitle());
             }
         });
         timer.start();
