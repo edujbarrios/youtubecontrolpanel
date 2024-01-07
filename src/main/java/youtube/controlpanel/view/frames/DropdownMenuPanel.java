@@ -1,5 +1,8 @@
 package youtube.controlpanel.view.frames;
 
+import youtube.controlpanel.controller.ButtonFactory;
+import youtube.controlpanel.controller.ComboBoxFactory;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -32,3 +35,4 @@ public class DropdownMenuPanel extends JPanel {
         add(applyButton);
     }
 }
+
