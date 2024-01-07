@@ -16,6 +16,11 @@ public class CheckboxPanel extends JPanel {
         JCheckBox commentsCheckbox = CheckboxFactory.createStyledCheckbox("Video comments");
         JCheckBox earningCheckbox = CheckboxFactory.createStyledCheckbox("Money earning");
 
+        checkboxes.add(viewsCheckbox);
+        checkboxes.add(likesCheckbox);
+        checkboxes.add(commentsCheckbox);
+        checkboxes.add(earningCheckbox);
+
         // Añadir checkboxes al panel
         setLayout(new GridLayout(4, 1));
         add(viewsCheckbox);
