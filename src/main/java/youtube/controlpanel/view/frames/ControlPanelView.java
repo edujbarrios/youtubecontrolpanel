@@ -41,20 +41,23 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
         detailsPanel.removeAll();
         graphsPanel.removeAll();
         detailsPanel.setLayout(new BorderLayout());
-        graphsPanel.setLayout(new GridLayout(2, 3));
+        graphsPanel.setLayout(new GridLayout(2, 2));
 
         // Create and display video details panel
-        JPanel videoDetailsPanel = new JPanel(new GridLayout(6, 2));
+        JPanel videoDetailsPanel = new JPanel(new GridLayout(2, 1));
 
         // Adding video details components
         videoDetailsPanel.add(createDetailPanel("Channel Name: " + channelName));
         videoDetailsPanel.add(createDetailPanel("Video Title: " + video.getSnippet().getTitle()));
         detailsPanel.add(videoDetailsPanel, BorderLayout.CENTER);
 
+        JPanel westPanel = new JPanel(new GridLayout(2, 1));
+        westPanel.add(detailsPanel);
+
         // Add checkboxes to a panel
-        if (dropdownPanel.getParent() != mainFrame) mainFrame.add(dropdownPanel, BorderLayout.CENTER);
+        if (dropdownPanel.getParent() != westPanel) westPanel.add(dropdownPanel);
         mainFrame.add(graphsPanel, BorderLayout.EAST);
-        mainFrame.add(detailsPanel, BorderLayout.WEST);
+        mainFrame.add(westPanel, BorderLayout.WEST);
         mainFrame.pack();
 
         // Call to the function to display details in the terminal
