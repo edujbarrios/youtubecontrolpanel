@@ -1,6 +1,7 @@
 package youtube.controlpanel.view.frames;
 
 import com.google.api.services.youtube.model.Video;
+import youtube.controlpanel.controller.ButtonFactory;
 import youtube.controlpanel.model.data.ChannelData;
 import youtube.controlpanel.model.data.VideoData;
 import youtube.controlpanel.model.resources.LinkParser;
@@ -40,7 +41,7 @@ public class MainView extends JFrame {
         // Cargar el logo y escalar la imagen
         ImageIcon originalIcon = new ImageIcon(getClass().getResource("/app_logo.png"));
         Image image = originalIcon.getImage(); // Transform it
-        Image newimg = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        Image newimg = image.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         ImageIcon logoIcon = new ImageIcon(newimg);  // transform it back
 
         // Crear el label del logo
@@ -72,13 +73,7 @@ public class MainView extends JFrame {
         add(titlePanel, BorderLayout.NORTH);
 
         urlTextField = new JTextField(40);
-        fetchButton = new JButton("Fetch Video Details");
-        // Estilo para el botón Fetch
-        fetchButton.setBackground(new Color(205, 32, 31)); // Un rojo más oscuro para el botón
-        fetchButton.setForeground(Color.BLACK);
-        fetchButton.setFont(new Font("Arial", Font.PLAIN, 14));
-        fetchButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        fetchButton.setFocusPainted(false);
+        fetchButton = ButtonFactory.createButton("Fetch Video Details");
 
         fetchButton.addActionListener((ActionEvent e) -> fetchChannelVideos());
 
@@ -99,7 +94,6 @@ public class MainView extends JFrame {
     private void fetchChannelVideos() {
         String url = urlTextField.getText();
         if (!LinkParser.isChannelUrl(url)) {
-            // Usar HTML para personalizar el mensaje de error
             JOptionPane.showMessageDialog(this,
                     "<html><body><p style='width: 200px;'>" +
                             "Invalid URL: <span style='color: red;'>" + url + "</span></p></body></html>",

@@ -2,6 +2,7 @@ package youtube.controlpanel.view.frames;
 
 import com.google.api.services.youtube.model.Video;
 import org.jfree.chart.ChartPanel;
+import youtube.controlpanel.controller.VideoButtonFactory;
 import youtube.controlpanel.model.chart_dataset.Dataset;
 import youtube.controlpanel.model.chart_dataset.ChartDataset;
 import youtube.controlpanel.view.chart_factory.Graph;
@@ -145,31 +146,25 @@ public class ControlPanelView extends JFrame implements YouTubeDataObserver {
     }
 
 //updates the videos dependin on the search, and it gives a video list with buttons
-    @Override
-    public void update(List<Video> videos) {
-        videosPanel.removeAll();
-        videosPanel.setLayout(new GridLayout(5, 1));
+        //Created a button factory to handle these buttons
+@Override
+public void update(List<Video> videos) {
+    videosPanel.removeAll();
+    videosPanel.setLayout(new GridLayout(5, 1));
 
-        // Apply style and display up to 5 latest videos as buttons
-        for (int count = 0; count < Math.min(videos.size(), 5); count++) {
-            Video video = videos.get(count);
-            String videoTitle = video.getSnippet().getTitle();
-            JButton videoButton = new JButton(videoTitle);
+    // Aplicar estilo y mostrar hasta 5 videos recientes como botones
+    for (int count = 0; count < Math.min(videos.size(), 5); count++) {
+        Video video = videos.get(count);
+        String videoTitle = video.getSnippet().getTitle();
+        JButton videoButton = VideoButtonFactory.createVideoButton(videoTitle);
 
-            // Apply the desired style
-            videoButton.setBackground(new Color(205, 32, 31)); // Same background as fetchButton
-            videoButton.setForeground(Color.BLACK); // Same foreground as fetchButton
-            videoButton.setFont(new Font("Arial", Font.PLAIN, 14)); // Same font as fetchButton
-            videoButton.setBorder(BorderFactory.createRaisedBevelBorder()); // Same border as fetchButton
-            videoButton.setFocusPainted(false);
-
-            videoButton.addActionListener(e -> displayVideoDetails(video, video.getSnippet().getChannelTitle()));
-            videosPanel.add(videoButton);
-        }
-
-        mainFrame.add(videosPanel, BorderLayout.SOUTH);
-        mainFrame.pack();
+        videoButton.addActionListener(e -> displayVideoDetails(video, video.getSnippet().getChannelTitle()));
+        videosPanel.add(videoButton);
     }
+
+    mainFrame.add(videosPanel, BorderLayout.SOUTH);
+    mainFrame.pack();
+}
 
 
     // Creates a detail panel with the specified text

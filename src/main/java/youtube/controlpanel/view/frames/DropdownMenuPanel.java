@@ -36,8 +36,8 @@ public class DropdownMenuPanel extends JPanel {
     }
 
     private void styleComboBox(JComboBox<String> comboBox) {
-        comboBox.setBackground(new Color(205, 32, 31)); // Same background as fetchButton
-        comboBox.setForeground(Color.green); // Same foreground as fetchButton
+        comboBox.setBackground(new Color(255, 255, 255)); // Same background as fetchButton
+        comboBox.setForeground(new Color(205, 32, 31)); // Changed to Youtube RED
         comboBox.setFont(new Font("Arial", Font.PLAIN, 14)); // Same font as fetchButton
     }
 
