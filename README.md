@@ -1,6 +1,6 @@
 # 🎥 Youtube Control Panel
 
-![App Logo](src/main/resources/app_logo.png | width=100)
+<img src="src/main/resources/app_logo.png" alt="App Logo" width="200"/>
 
 ### Modern Java-based application leveraging the MVC pattern and other design patterns for enhanced functionality in YouTube data visualization.
 
