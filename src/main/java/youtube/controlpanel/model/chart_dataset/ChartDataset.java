@@ -3,6 +3,7 @@ package youtube.controlpanel.model.chart_dataset;
 import com.google.api.services.youtube.model.Video;
 import org.jfree.data.category.DefaultCategoryDataset;
 import youtube.controlpanel.model.data.VideoData;
+import youtube.controlpanel.model.resources.YouTubeEarningsCalculator;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +33,6 @@ public class ChartDataset implements Dataset {
     // Creates a dataset for the charts based on video statistics
     @Override
     public void updateData() {
-        String series = "Video Views";
-
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String currentDateTime = dateFormat.format(currentDate);
@@ -41,10 +40,10 @@ public class ChartDataset implements Dataset {
         VideoData videoData = new VideoData();
         _video = videoData.retrieveData("https://www.youtube.com/watch?v=" + _video.getId());
 
-        datasets.get(0).addValue(_video.getStatistics().getViewCount(), series, currentDateTime);
-        datasets.get(1).addValue(_video.getStatistics().getLikeCount(), series, currentDateTime);
-        datasets.get(2).addValue(_video.getStatistics().getCommentCount(), series, currentDateTime);
-        datasets.get(3).addValue(_video.getStatistics().getViewCount(), series, currentDateTime); // Youtube video earnings missing
+        datasets.get(0).addValue(_video.getStatistics().getViewCount(), "Video Views", currentDateTime);
+        datasets.get(1).addValue(_video.getStatistics().getLikeCount(), "Video Likes", currentDateTime);
+        datasets.get(2).addValue(_video.getStatistics().getCommentCount(), "Video Comments", currentDateTime);
+        datasets.get(3).addValue(YouTubeEarningsCalculator.calculateAdjustedEarnings(_video), "Video Earnings", currentDateTime);
     }
 
     @Override
